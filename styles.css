@@ -1,0 +1,185 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.logo img {
+    width: 100px; /* Adjust size as needed */
+    height: auto;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color:  #d9eaf7;
+    color: #333;
+}
+
+header {
+    background-color: #d9eaf7;
+    color: #fff;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed; /* Makes header static on scroll */
+    width: 100%; /* Ensures header spans the full width */
+    top: 0; /* Positions the header at the top */
+    z-index: 1000; /* Ensures header stays on top of other content */
+}
+
+.email-icon {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+}
+
+
+.logo {
+    font-size: 1.5rem;
+    color: #4caf50;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Aligns links to the right */
+}
+
+.nav-links a {
+    color: #ff5733;
+    margin: 0 1rem;
+    text-decoration: none;
+
+}
+
+.nav-links a:hover {
+    color: #4caf50;
+}
+
+.cta-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+
+
+.image-carousel {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 2rem;
+    background-color: #d9eaf7;
+}
+
+.carousel-images {
+    width: 50%; /* Occupies 50% of the container */
+    overflow: hidden;
+    position: relative;
+}
+
+.carousel-quotes {
+    width: 50%; /* Occupies the other 50% of the container */
+    padding-left: 2rem;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+
+.carousel-images img {
+    width: 100%;
+    height: auto; /* Ensures images scale proportionally */
+    display: none;
+}
+
+.carousel-images img.active {
+    display: block;
+}
+
+.quote-slide {
+    display: none;
+    font-style: italic;
+    text-align: left;
+}
+
+.quote-slide.active {
+    display: block;
+}
+
+.features, .signup {
+    background-color: #d9eaf7;
+    padding: 2rem;
+    text-align: center;
+}
+
+.features h3, .signup h3 {
+    color: #1b3b5f;
+    margin-bottom: 1rem;
+}
+
+.features ul {
+    list-style: none;
+}
+
+.carousel-section {
+    background-color: #e0e0e0;
+    padding: 2rem;
+    text-align: center;
+}
+
+.testimonials-carousel {
+    position: relative;
+    overflow: hidden;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.testimonial-slide {
+    display: none;
+    text-align: center;
+}
+
+.testimonial-slide.active {
+    display: block;
+}
+
+.signup form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.signup input, .signup button {
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+.signup input {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    background-color: #1b3b5f;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .carousel-images img {
+        max-width: 100%;
+    }
+
+    .hero, .features, .signup, .carousel-section {
+        padding: 1rem;
+    }
+}
