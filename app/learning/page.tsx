@@ -10,12 +10,29 @@ export default async function MyLearningPage() {
         redirect('/login')
     }
 
-    // Fetch enrollments with course details
+    // Fetch enrollments with course details and progress
     const { data: enrollments } = await supabase
         .from('enrollments')
-        .select('*, courses(*)')
+        .select(`
+            *, 
+            courses (
+                *,
+                modules (
+                    lessons (id)
+                )
+            )
+        `)
         .eq('user_id', user.id)
         .order('enrolled_at', { ascending: false })
+
+    // Fetch completed lessons count for user
+    const { data: progress } = await supabase
+        .from('user_progress')
+        .select('lesson_id')
+        .eq('user_id', user.id)
+        .eq('is_completed', true)
+
+    const completedSet = new Set(progress?.map(p => p.lesson_id))
 
     return (
         <div className="min-h-screen bg-slate-950 p-8">
@@ -26,16 +43,26 @@ export default async function MyLearningPage() {
                 {enrollments && enrollments.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {enrollments.map((enrollment) => {
-                            const course = enrollment.courses as any // Type assertion for MVP
+                            const course = enrollment.courses as any
+
+                            // Calculate Progress
+                            // 1. Flatten all lessons from all modules
+                            const allLessons = course.modules?.flatMap((m: any) => m.lessons) || []
+                            const totalLessons = allLessons.length
+                            // 2. Count how many are in completedSet
+                            const completedCount = allLessons.filter((l: any) => completedSet.has(l.id)).length
+
+                            const percent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0
+
                             return (
-                                <Link key={enrollment.id} href={`/courses/${course.id}`} className="group block h-full">
+                                <Link key={enrollment.id} href={`/courses/${course.id}/learn`} className="group block h-full">
                                     <div className="h-full rounded-2xl glass p-6 transition-all duration-300 hover:bg-slate-800/50 hover:border-indigo-500/30">
                                         <h3 className="text-xl font-bold text-slate-100 group-hover:text-indigo-400 transition-colors">{course.title}</h3>
                                         <p className="mt-2 text-sm text-slate-400 line-clamp-2">{course.description}</p>
                                         <div className="mt-4 w-full bg-slate-800 rounded-full h-1.5">
-                                            <div className="bg-indigo-500 h-1.5 rounded-full w-[10%]"></div>
+                                            <div className="bg-indigo-500 h-1.5 rounded-full transition-all duration-500" style={{ width: `${percent}%` }}></div>
                                         </div>
-                                        <p className="mt-2 text-xs text-slate-500">10% Complete</p>
+                                        <p className="mt-2 text-xs text-slate-500">{percent}% Complete</p>
                                     </div>
                                 </Link>
                             )

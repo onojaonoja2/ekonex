@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import ModulesList from './modules-list'
 
 export default async function InstructorCourseDashboard({ params }: { params: { id: string } }) {
     const supabase = await createClient()
@@ -21,6 +22,13 @@ export default async function InstructorCourseDashboard({ params }: { params: { 
     if (!course) {
         return <div className="p-20 text-center text-white">Course not found</div>
     }
+
+    // Fetch modules with nested lessons
+    const { data: modules } = await supabase
+        .from('modules')
+        .select('*, lessons(*)')
+        .eq('course_id', id)
+        .order('position', { ascending: true })
 
     return (
         <div className="min-h-screen bg-slate-950 p-8">
@@ -43,10 +51,7 @@ export default async function InstructorCourseDashboard({ params }: { params: { 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-2 space-y-6">
                         <div className="rounded-2xl glass p-6 border border-slate-800">
-                            <h2 className="text-xl font-semibold text-white mb-4">Course Content</h2>
-                            <div className="flex flex-col items-center justify-center py-12 border-2 border-dashed border-slate-800 rounded-xl bg-slate-900/30">
-                                <p className="text-slate-500">Module management coming in Sprint 3</p>
-                            </div>
+                            <ModulesList courseId={course.id} modules={modules || []} />
                         </div>
                     </div>
 
