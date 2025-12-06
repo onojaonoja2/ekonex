@@ -1,26 +1,62 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Premium Dark/Light Palette - HSL for flexibility */
+  --background: #0f172a; /* Slate 900 for deep background */
+  --foreground: #f8fafc; /* Slate 50 */
+  
+  --primary: #6366f1; /* Indigo 500 */
+  --primary-foreground: #ffffff;
+  
+  --secondary: #1e293b; /* Slate 800 */
+  --secondary-foreground: #e2e8f0;
+
+  --accent: #8b5cf6; /* Violet 500 */
+  --accent-foreground: #ffffff;
+
+  --card: rgba(30, 41, 59, 0.7); /* Glassmorphism base */
+  --card-foreground: #f1f5f9;
+
+  --border: rgba(148, 163, 184, 0.2);
+  
+  /* Gradients */
+  --gradient-bg: radial-gradient(circle at top left, #1e1b4b, #0f172a);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Outfit', system-ui, sans-serif;
 }
 
 body {
-  background: var(--background);
+  background: var(--gradient-bg);
+  background-attachment: fixed;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  min-height: 100vh;
+}
+
+/* Glassmorphism Utilities */
+.glass {
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+}
+
+.glass-hover:hover {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: rgba(148, 163, 184, 0.4);
 }
