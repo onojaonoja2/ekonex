@@ -36,7 +36,53 @@ export async function enrollInCourse(courseId: string, formData: FormData) {
 
     revalidatePath('/courses')
     revalidatePath(`/courses/${courseId}`)
-    redirect(`/courses/${courseId}`)
+    revalidatePath(`/courses/${courseId}`)
+}
+
+export async function submitQuiz(quizId: string, courseId: string, formValues: any) {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) return { error: 'Not authenticated' }
+
+    // 1. Fetch correct answers from DB (secure, server-side)
+    const { data: questions } = await supabase
+        .from('questions')
+        .select('id, answers(id, is_correct)')
+        .eq('quiz_id', quizId)
+
+    if (!questions) return { error: 'Quiz not found' }
+
+    // 2. Calculate score
+    let score = 0
+    let totalQuestions = questions.length
+
+    questions.forEach(q => {
+        const userAnswerId = formValues[q.id]
+        const correctAnswer = q.answers.find(a => a.is_correct)
+
+        if (correctAnswer && userAnswerId === correctAnswer.id) {
+            score++
+        }
+    })
+
+    const isPassed = (score / totalQuestions) >= 0.7 // 70% passing score hardcoded for MVP
+
+    // 3. Record Attempt
+    const { error } = await supabase.from('quiz_attempts').insert({
+        user_id: user.id,
+        quiz_id: quizId,
+        score: Math.round((score / totalQuestions) * 100),
+        is_passed: isPassed
+    })
+
+    if (error) {
+        console.error('Quiz Submit Error:', error)
+        return { error: 'Submission failed' }
+    }
+
+    revalidatePath(`/courses/${courseId}/learn`)
+    return { success: true, score: Math.round((score / totalQuestions) * 100), isPassed }
 }
 
 import { redirect } from 'next/navigation'

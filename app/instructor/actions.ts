@@ -77,4 +77,63 @@ export async function createLesson(moduleId: string, courseId: string, formData:
     }
 
     revalidatePath(`/instructor/courses/${courseId}`)
+    revalidatePath(`/instructor/courses/${courseId}`)
 }
+
+export async function createQuiz(moduleId: string, courseId: string, formData: FormData) {
+    const supabase = await createClient()
+
+    const title = formData.get('title') as string
+
+    const { data, error } = await supabase.from('quizzes').insert({
+        module_id: moduleId,
+        title,
+        passing_score: 70
+    }).select().single()
+
+    if (error) {
+        console.error('Create Quiz Error:', error)
+        return { error: 'Could not create quiz' }
+    }
+
+    revalidatePath(`/instructor/courses/${courseId}`)
+    redirect(`/instructor/courses/${courseId}/quizzes/${data.id}`)
+}
+
+export async function createQuestion(quizId: string, formData: FormData) {
+    const supabase = await createClient()
+    const text = formData.get('text') as string
+
+    const { error } = await supabase.from('questions').insert({
+        quiz_id: quizId,
+        text,
+        points: 10
+    })
+
+    if (error) return { error: 'Could not create question' }
+
+    revalidatePath(`/instructor/courses/*/quizzes/${quizId}`)
+}
+
+export async function createAnswer(questionId: string, quizId: string, formData: FormData) {
+    const supabase = await createClient()
+    const text = formData.get('text') as string
+    const isCorrect = formData.get('isCorrect') === 'on'
+
+    const { error } = await supabase.from('answers').insert({
+        question_id: questionId,
+        text,
+        is_correct: isCorrect
+    })
+
+    if (error) return { error: 'Could not create answer' }
+
+    revalidatePath(`/instructor/courses/*/quizzes/${quizId}`)
+}
+
+export async function deleteQuestion(questionId: string, quizId: string) {
+    const supabase = await createClient()
+    await supabase.from('questions').delete().eq('id', questionId)
+    revalidatePath(`/instructor/courses/*/quizzes/${quizId}`)
+}
+

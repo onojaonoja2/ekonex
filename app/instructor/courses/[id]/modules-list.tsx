@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { createModule, createLesson } from '@/app/instructor/actions'
+import { createModule, createLesson, createQuiz } from '@/app/instructor/actions'
 import { toast } from 'sonner'
+import Link from 'next/link'
 
 type Lesson = {
     id: string
@@ -11,15 +12,22 @@ type Lesson = {
     is_free_preview: boolean
 }
 
+type Quiz = {
+    id: string
+    title: string
+}
+
 type Module = {
     id: string
     title: string
     lessons: Lesson[]
+    quizzes: Quiz[]
 }
 
 export default function ModulesList({ courseId, modules }: { courseId: string, modules: Module[] }) {
     const [isAddingModule, setIsAddingModule] = useState(false)
     const [addingLessonToModule, setAddingLessonToModule] = useState<string | null>(null)
+    const [addingQuizToModule, setAddingQuizToModule] = useState<string | null>(null)
 
     async function handleAddModule(formData: FormData) {
         const result = await createModule(courseId, formData)
@@ -36,6 +44,15 @@ export default function ModulesList({ courseId, modules }: { courseId: string, m
         else {
             toast.success('Lesson added')
             setAddingLessonToModule(null)
+        }
+    }
+
+    async function handleAddQuiz(moduleId: string, formData: FormData) {
+        const result = await createQuiz(moduleId, courseId, formData)
+        if (result?.error) toast.error(result.error)
+        else {
+            toast.success('Quiz created')
+            setAddingQuizToModule(null)
         }
     }
 
@@ -64,9 +81,13 @@ export default function ModulesList({ courseId, modules }: { courseId: string, m
                     <div key={module.id} className="rounded-xl border border-slate-700 bg-slate-900/30 overflow-hidden">
                         <div className="bg-slate-900/80 p-4 flex items-center justify-between border-b border-slate-800">
                             <span className="font-semibold text-slate-200">{module.title}</span>
-                            <button onClick={() => setAddingLessonToModule(module.id)} className="text-xs font-semibold text-indigo-400 hover:text-indigo-300">+ Add Lesson</button>
+                            <div className="flex gap-4">
+                                <button onClick={() => setAddingQuizToModule(module.id)} className="text-xs font-semibold text-emerald-400 hover:text-emerald-300">+ Add Quiz</button>
+                                <button onClick={() => setAddingLessonToModule(module.id)} className="text-xs font-semibold text-indigo-400 hover:text-indigo-300">+ Add Lesson</button>
+                            </div>
                         </div>
 
+                        {/* Add Lesson Form */}
                         {addingLessonToModule === module.id && (
                             <div className="p-4 bg-slate-900/50 border-b border-slate-800">
                                 <h3 className="text-xs font-semibold uppercase text-slate-500 mb-3">New Lesson</h3>
@@ -95,21 +116,49 @@ export default function ModulesList({ courseId, modules }: { courseId: string, m
                             </div>
                         )}
 
+                        {/* Add Quiz Form */}
+                        {addingQuizToModule === module.id && (
+                            <div className="p-4 bg-slate-900/50 border-b border-slate-800">
+                                <h3 className="text-xs font-semibold uppercase text-slate-500 mb-3">New Quiz</h3>
+                                <form action={(fd) => handleAddQuiz(module.id, fd)} className="flex gap-2">
+                                    <input name="title" required placeholder="Quiz Title (e.g. Final Exam)" className="flex-1 rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-indigo-500 outline-none" />
+                                    <button type="submit" className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500">Create & Build</button>
+                                    <button type="button" onClick={() => setAddingQuizToModule(null)} className="rounded-lg bg-slate-800 px-4 py-2 text-sm font-semibold text-slate-300 hover:bg-slate-700">Cancel</button>
+                                </form>
+                            </div>
+                        )}
+
                         <div className="divide-y divide-slate-800">
-                            {module.lessons && module.lessons.length > 0 ? (
-                                module.lessons.map((lesson) => (
-                                    <div key={lesson.id} className="p-3 pl-6 flex items-center justify-between hover:bg-slate-800/20 transition-colors">
-                                        <div className="flex items-center gap-3">
-                                            <span className={`text-[10px] uppercase px-1.5 py-0.5 rounded border ${lesson.content_type === 'video' ? 'bg-rose-500/10 border-rose-500/20 text-rose-400' : 'bg-sky-500/10 border-sky-500/20 text-sky-400'}`}>
-                                                {lesson.content_type}
-                                            </span>
-                                            <span className="text-sm text-slate-300">{lesson.title}</span>
-                                            {lesson.is_free_preview && <span className="text-[10px] text-emerald-400 border border-emerald-500/20 bg-emerald-500/5 px-1.5 py-0.5 rounded-full">Free</span>}
-                                        </div>
+                            {/* Render Lessons */}
+                            {module.lessons?.map((lesson) => (
+                                <div key={lesson.id} className="p-3 pl-6 flex items-center justify-between hover:bg-slate-800/20 transition-colors">
+                                    <div className="flex items-center gap-3">
+                                        <span className={`text-[10px] uppercase px-1.5 py-0.5 rounded border ${lesson.content_type === 'video' ? 'bg-rose-500/10 border-rose-500/20 text-rose-400' : 'bg-sky-500/10 border-sky-500/20 text-sky-400'}`}>
+                                            {lesson.content_type}
+                                        </span>
+                                        <span className="text-sm text-slate-300">{lesson.title}</span>
+                                        {lesson.is_free_preview && <span className="text-[10px] text-emerald-400 border border-emerald-500/20 bg-emerald-500/5 px-1.5 py-0.5 rounded-full">Free</span>}
                                     </div>
-                                ))
-                            ) : (
-                                <div className="p-4 text-center text-xs text-slate-600 italic">No lessons in this module yet.</div>
+                                </div>
+                            ))}
+
+                            {/* Render Quizzes */}
+                            {module.quizzes?.map((quiz) => (
+                                <div key={quiz.id} className="p-3 pl-6 flex items-center justify-between hover:bg-slate-800/20 transition-colors bg-emerald-900/5">
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-[10px] uppercase px-1.5 py-0.5 rounded border bg-emerald-500/10 border-emerald-500/20 text-emerald-400">
+                                            Quiz
+                                        </span>
+                                        <span className="text-sm text-slate-300">{quiz.title}</span>
+                                    </div>
+                                    <Link href={`/instructor/courses/${courseId}/quizzes/${quiz.id}`} className="text-xs text-indigo-400 hover:text-indigo-300 underline">
+                                        Edit
+                                    </Link>
+                                </div>
+                            ))}
+
+                            {(!module.lessons?.length && !module.quizzes?.length) && (
+                                <div className="p-4 text-center text-xs text-slate-600 italic">No content in this module yet.</div>
                             )}
                         </div>
                     </div>

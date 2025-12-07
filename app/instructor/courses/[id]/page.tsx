@@ -23,10 +23,10 @@ export default async function InstructorCourseDashboard({ params }: { params: { 
         return <div className="p-20 text-center text-white">Course not found</div>
     }
 
-    // Fetch modules with nested lessons
+    // Fetch modules with nested lessons and quizzes
     const { data: modules } = await supabase
         .from('modules')
-        .select('*, lessons(*)')
+        .select('*, lessons(*), quizzes(*)')
         .eq('course_id', id)
         .order('position', { ascending: true })
 

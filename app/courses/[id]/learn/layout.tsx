@@ -32,7 +32,7 @@ export default async function LearnLayout({
     // Fetch modules and lessons
     const { data: modules } = await supabase
         .from('modules')
-        .select('*, lessons(id, title, position, is_free_preview)')
+        .select('*, lessons(id, title, position, is_free_preview), quizzes(id, title)')
         .eq('course_id', id)
         .order('position', { ascending: true })
 
@@ -74,6 +74,28 @@ export default async function LearnLayout({
                                     )
                                 })}
                             </div>
+
+                            <div className="space-y-1 mt-1">
+                                {module.quizzes?.map((quiz: any) => {
+                                    // Hacky way to check completion for mvp without separate fetch
+                                    // Ideally layout should fetch quiz_attempts
+                                    // For now, no progress check on sidebar for quizzes or fetch simplisticly
+
+                                    return (
+                                        <Link
+                                            key={quiz.id}
+                                            href={`/courses/${id}/learn/quizzes/${quiz.id}`}
+                                            className="flex items-center gap-3 p-2 rounded-lg text-sm transition-colors hover:bg-slate-800 text-slate-200"
+                                        >
+                                            <div className="h-4 w-4 rounded-full border border-emerald-600/50 bg-emerald-500/10 flex items-center justify-center text-[8px] font-bold text-emerald-500">
+                                                Q
+                                            </div>
+                                            <span className="line-clamp-1">{quiz.title}</span>
+                                        </Link>
+                                    )
+                                })}
+                            </div>
+
                         </div>
                     ))}
                 </div>
