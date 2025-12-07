@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import ModulesList from './modules-list'
+import AiSyncButton from './ai-sync-button'
 
 export default async function InstructorCourseDashboard({ params }: { params: { id: string } }) {
     const supabase = await createClient()
@@ -59,6 +60,8 @@ export default async function InstructorCourseDashboard({ params }: { params: { 
                         <div className="rounded-2xl glass p-6 border border-slate-800">
                             <h2 className="text-lg font-semibold text-white mb-4">Course Settings</h2>
                             <div className="space-y-4">
+                                <AiSyncButton courseId={course.id} />
+
                                 <div>
                                     <label className="text-xs font-semibold text-slate-500 uppercase">Price</label>
                                     <p className="text-slate-300 font-medium">{course.price > 0 ? `$${course.price}` : 'Free'}</p>

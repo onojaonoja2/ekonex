@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import ChatWidget from './chat-widget'
 
 export default async function LearnLayout({
     children,
@@ -77,10 +78,6 @@ export default async function LearnLayout({
 
                             <div className="space-y-1 mt-1">
                                 {module.quizzes?.map((quiz: any) => {
-                                    // Hacky way to check completion for mvp without separate fetch
-                                    // Ideally layout should fetch quiz_attempts
-                                    // For now, no progress check on sidebar for quizzes or fetch simplisticly
-
                                     return (
                                         <Link
                                             key={quiz.id}
@@ -105,6 +102,9 @@ export default async function LearnLayout({
             <main className="flex-1 overflow-y-auto h-screen relative">
                 {children}
             </main>
+
+            {/* Chat Widget */}
+            <ChatWidget courseId={id} />
         </div>
     )
 }
