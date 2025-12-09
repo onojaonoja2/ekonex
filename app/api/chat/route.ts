@@ -1,6 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
-import { openai } from '@ai-sdk/openai'
-import { streamText, tool } from 'ai'
+import { google } from '@ai-sdk/google'
+import { embed, streamText } from 'ai'
 import { z } from 'zod'
 
 // Allow streaming responses up to 30 seconds
@@ -13,31 +13,10 @@ export async function POST(req: Request) {
     const supabase = await createClient()
 
     // 1. Get embedding for user query
-    const response = await fetch('https://api.openai.com/v1/embeddings', {
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            model: 'text-embedding-3-small',
-            input: lastMessage.content.replaceAll('\n', ' '),
-        }),
+    const { embedding } = await embed({
+        model: google.textEmbeddingModel('text-embedding-004'),
+        value: lastMessage.content.replaceAll('\n', ' ')
     })
-    if (!response.ok) {
-        if (response.status === 429) {
-            return new Response('AI quota exceeded. Please check billing.', { status: 429 })
-        }
-        return new Response('Failed to generate embedding', { status: 500 })
-    }
-
-    const embeddingData = await response.json()
-
-    if (!embeddingData.data) {
-        return new Response('Failed to generate embedding', { status: 500 })
-    }
-
-    const embedding = embeddingData.data[0].embedding
 
     // 2. Search for relevant context
     const { data: documents } = await supabase.rpc('match_documents', {
@@ -53,7 +32,7 @@ export async function POST(req: Request) {
 
     // 4. Stream Response
     const result = streamText({
-        model: openai('gpt-4o'),
+        model: google('gemini-2.0-flash'),
         system: `You are a helpful AI Tutor for an online course platform called Ekonex.
      You are answering questions based on the provided course context.
      If the answer is not in the context, check if you can answer from general knowledge but mention that it might not be covered in the specific lesson.
@@ -65,5 +44,5 @@ export async function POST(req: Request) {
         messages,
     })
 
-    return result.toDataStreamResponse()
+    return result.toTextStreamResponse()
 }

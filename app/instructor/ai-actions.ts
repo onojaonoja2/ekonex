@@ -1,12 +1,9 @@
 'use server'
 
 import { createClient } from '@/utils/supabase/server'
-import { OpenAI } from 'openai'
+import { google } from '@ai-sdk/google'
+import { embed } from 'ai'
 import { revalidatePath } from 'next/cache'
-
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-})
 
 export async function generateCourseEmbeddings(courseId: string) {
     const supabase = await createClient()
@@ -62,12 +59,10 @@ export async function generateCourseEmbeddings(courseId: string) {
 
         try {
             // Generate embedding
-            const embeddingResponse = await openai.embeddings.create({
-                model: 'text-embedding-3-small',
-                input: lesson.content_text.replaceAll('\n', ' ')
+            const { embedding } = await embed({
+                model: google.textEmbeddingModel('text-embedding-004'),
+                value: lesson.content_text.replaceAll('\n', ' ')
             })
-
-            const embedding = embeddingResponse.data[0].embedding
 
             // Save to DB
             await supabase.from('embeddings').insert({
