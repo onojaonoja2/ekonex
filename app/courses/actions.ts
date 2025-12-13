@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/utils/supabase/server'
+import { createNotification } from '@/app/notifications/actions'
 
 export async function enrollInCourse(courseId: string, formData: FormData) {
     const supabase = await createClient()
@@ -36,7 +37,14 @@ export async function enrollInCourse(courseId: string, formData: FormData) {
 
     revalidatePath('/courses')
     revalidatePath(`/courses/${courseId}`)
-    revalidatePath(`/courses/${courseId}`)
+
+    // Notify Student
+    await createNotification(
+        user.id,
+        'Enrolled Successfully',
+        'You have successfully enrolled in the course. Happy learning!',
+        'success'
+    )
 }
 
 export async function submitQuiz(quizId: string, courseId: string, formValues: any) {
@@ -82,6 +90,16 @@ export async function submitQuiz(quizId: string, courseId: string, formValues: a
     }
 
     revalidatePath(`/courses/${courseId}/learn`)
+
+    if (isPassed) {
+        await createNotification(
+            user.id,
+            'Quiz Passed! 🎉',
+            `Congratulations! You passed the quiz with a score of ${Math.round((score / totalQuestions) * 100)}%.`,
+            'success'
+        )
+    }
+
     return { success: true, score: Math.round((score / totalQuestions) * 100), isPassed }
 }
 

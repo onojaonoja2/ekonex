@@ -1,6 +1,9 @@
 import { createClient } from '@/utils/supabase/server'
 import QuizPlayer from './quiz-player'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function QuizPage({ params }: { params: { id: string, quizId: string } }) {
     const supabase = await createClient()
     const { id: courseId, quizId } = await params

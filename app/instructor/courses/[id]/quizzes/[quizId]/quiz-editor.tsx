@@ -38,7 +38,7 @@ export default function QuizEditor({
     const [addingAnswerToQuestion, setAddingAnswerToQuestion] = useState<string | null>(null)
 
     async function handleAddQuestion(formData: FormData) {
-        const result = await createQuestion(quiz.id, formData)
+        const result = await createQuestion(quiz.id, courseId, formData)
         if (result?.error) toast.error(result.error)
         else {
             toast.success('Question added')
@@ -47,7 +47,7 @@ export default function QuizEditor({
     }
 
     async function handleAddAnswer(questionId: string, formData: FormData) {
-        const result = await createAnswer(questionId, quiz.id, formData)
+        const result = await createAnswer(questionId, quiz.id, courseId, formData)
         if (result?.error) toast.error(result.error)
         else {
             toast.success('Answer added')
@@ -57,8 +57,13 @@ export default function QuizEditor({
 
     async function handleDeleteQuestion(questionId: string) {
         if (!confirm('Are you sure? This will delete the question and all answers.')) return
-        await deleteQuestion(questionId, quiz.id)
-        toast.success('Question deleted')
+        const result = await deleteQuestion(questionId, quiz.id, courseId)
+
+        if (result?.error) {
+            toast.error(result.error)
+        } else {
+            toast.success('Question deleted')
+        }
     }
 
     return (
