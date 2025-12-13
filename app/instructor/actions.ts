@@ -170,29 +170,7 @@ export async function deleteQuestion(questionId: string, quizId: string, courseI
         }
 
         if (!data || data.length === 0) {
-            const { data: { user } } = await supabase.auth.getUser()
-
-            // Deep debug: Find who owns this question
-            const { data: questionOwner } = await supabase
-                .from('questions')
-                .select(`
-                    id,
-                    quizzes (
-                        module_id,
-                        modules (
-                            course_id,
-                            courses (
-                                instructor_id
-                            )
-                        )
-                    )
-                `)
-                .eq('id', questionId)
-                .single()
-
-            const ownerId = (questionOwner?.quizzes as any)?.modules?.courses?.instructor_id
-
-            return { error: `Delete failed. User: ${user?.id}, Owner: ${ownerId}, Question: ${questionId}` }
+            return { error: 'Could not delete question (Permission denied or record not found)' }
         }
 
         revalidatePath(`/instructor/courses/${courseId}/quizzes/${quizId}`)
