@@ -4,7 +4,7 @@ import QuizPlayer from './quiz-player'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-export default async function QuizPage({ params }: { params: { id: string, quizId: string } }) {
+export default async function QuizPage({ params }: { params: Promise<{ id: string, quizId: string }> }) {
     const supabase = await createClient()
     const { id: courseId, quizId } = await params
 

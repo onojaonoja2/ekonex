@@ -2,7 +2,7 @@ import { createClient } from '@/utils/supabase/server'
 import { markLessonComplete } from '@/app/courses/actions'
 import { redirect } from 'next/navigation'
 
-export default async function LessonPage({ params }: { params: { id: string, lessonId: string } }) {
+export default async function LessonPage({ params }: { params: Promise<{ id: string, lessonId: string }> }) {
     const supabase = await createClient()
     const { id: courseId, lessonId } = await params
     console.log('Rendering Lesson Page:', lessonId)

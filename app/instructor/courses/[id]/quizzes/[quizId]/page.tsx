@@ -6,7 +6,7 @@ import QuizEditor from './quiz-editor'
 export default async function QuizBuilderPage({
     params
 }: {
-    params: { id: string, quizId: string }
+    params: Promise<{ id: string, quizId: string }>
 }) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()

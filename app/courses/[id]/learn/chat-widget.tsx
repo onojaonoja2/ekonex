@@ -10,10 +10,7 @@ export default function ChatWidget({ courseId, lessonId }: { courseId: string, l
 
     // Adapted to the available API keys from debug session:
     // ['id', 'messages', 'setMessages', 'sendMessage', 'regenerate', 'clearError', 'stop', 'error', 'resumeStream', 'status', 'addToolResult', 'addToolOutput']
-    const { messages, sendMessage, status, error } = useChat({
-        api: '/api/chat',
-        body: { courseId, lessonId }
-    })
+    const { messages, sendMessage, status, error } = useChat()
 
     const isLoading = status === 'streaming' || status === 'submitted'
     const bottomRef = useRef<HTMLDivElement>(null)
@@ -37,6 +34,8 @@ export default function ChatWidget({ courseId, lessonId }: { courseId: string, l
             await sendMessage({
                 role: 'user',
                 content: userMessage
+            } as any, {
+                body: { courseId, lessonId }
             })
         } catch (error) {
             console.error('Chat error:', error)
@@ -69,7 +68,7 @@ export default function ChatWidget({ courseId, lessonId }: { courseId: string, l
                     <div>
                         <h3 className="text-sm font-semibold text-white">Ekonex Tutor</h3>
                         <div className="flex items-center gap-1.5">
-                            <span className={`h-1.5 w-1.5 rounded-full ${status === 'connected' || status === 'ready' ? 'bg-emerald-500' : 'bg-yellow-500'} animate-pulse`}></span>
+                            <span className={`h-1.5 w-1.5 rounded-full ${status === 'ready' ? 'bg-emerald-500' : 'bg-yellow-500'} animate-pulse`}></span>
                             <span className="text-[10px] text-slate-400">
                                 {status === 'streaming' ? 'Typing...' : 'Online'}
                             </span>
@@ -95,7 +94,7 @@ export default function ChatWidget({ courseId, lessonId }: { courseId: string, l
                     </div>
                 )}
 
-                {messages.map(m => (
+                {messages.map((m: any) => (
                     <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                         <div className={`
                             max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed

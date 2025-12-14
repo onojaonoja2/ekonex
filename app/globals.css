@@ -2,23 +2,38 @@
 
 :root {
   /* Premium Dark/Light Palette - HSL for flexibility */
-  --background: #0f172a; /* Slate 900 for deep background */
-  --foreground: #f8fafc; /* Slate 50 */
-  
-  --primary: #6366f1; /* Indigo 500 */
+  --background: #0f172a;
+  /* Slate 900 for deep background */
+  --foreground: #f8fafc;
+  /* Slate 50 */
+
+  --primary: #6366f1;
+  /* Indigo 500 */
   --primary-foreground: #ffffff;
-  
-  --secondary: #1e293b; /* Slate 800 */
+
+  --secondary: #1e293b;
+  /* Slate 800 */
   --secondary-foreground: #e2e8f0;
 
-  --accent: #8b5cf6; /* Violet 500 */
+  --accent: #8b5cf6;
+  /* Violet 500 */
   --accent-foreground: #ffffff;
 
-  --card: rgba(30, 41, 59, 0.7); /* Glassmorphism base */
+  --card: rgba(30, 41, 59, 0.7);
+  /* Glassmorphism base */
   --card-foreground: #f1f5f9;
 
   --border: rgba(148, 163, 184, 0.2);
-  
+
+  --destructive: #ef4444;
+  /* Red 500 */
+  --destructive-foreground: #ffffff;
+
+  --muted: #334155;
+  /* Slate 700 */
+  --muted-foreground: #94a3b8;
+  /* Slate 400 */
+
   /* Gradients */
   --gradient-bg: radial-gradient(circle at top left, #1e1b4b, #0f172a);
 }
@@ -35,7 +50,11 @@
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-border: var(--border);
-  
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-display: 'Outfit', system-ui, sans-serif;
 }

@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 import ModulesList from './modules-list'
 import AiSyncButton from './ai-sync-button'
 
-export default async function InstructorCourseDashboard({ params }: { params: { id: string } }) {
+export default async function InstructorCourseDashboard({ params }: { params: Promise<{ id: string }> }) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 

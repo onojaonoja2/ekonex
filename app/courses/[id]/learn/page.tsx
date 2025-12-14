@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 
-export default async function LearnPage({ params }: { params: { id: string } }) {
+export default async function LearnPage({ params }: { params: Promise<{ id: string }> }) {
     const supabase = await createClient()
     const { id } = await params
 

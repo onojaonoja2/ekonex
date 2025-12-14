@@ -3,7 +3,7 @@ import { enrollInCourse } from '../actions'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 
-export default async function CourseDetailsPage({ params }: { params: { id: string } }) {
+export default async function CourseDetailsPage({ params }: { params: Promise<{ id: string }> }) {
     const supabase = await createClient()
 
     // Unwrap params object before using it (Next.js 15+ requirement)
