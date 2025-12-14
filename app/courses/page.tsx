@@ -1,5 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
+import { CourseCard } from '@/components/course-card'
 
 export default async function CourseCatalogPage() {
     const supabase = await createClient()
@@ -22,34 +23,9 @@ export default async function CourseCatalogPage() {
                 {courses && courses.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {courses.map((course) => (
-                            <Link key={course.id} href={`/courses/${course.id}`} className="group block h-full">
-                                <div className="h-full rounded-2xl glass p-0 overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-indigo-500/10">
-                                    <div className={`h-48 w-full bg-gradient-to-tr ${course.cover_image ? '' : 'from-indigo-600 to-violet-600'} flex items-center justify-center`}>
-                                        {course.cover_image ? (
-                                            // eslint-disable-next-line @next/next/no-img-element
-                                            <img src={course.cover_image} alt={course.title} className="w-full h-full object-cover" />
-                                        ) : (
-                                            <span className="text-4xl font-bold text-white/30">{course.title[0]}</span>
-                                        )}
-                                    </div>
-
-                                    <div className="p-6">
-                                        <div className="flex items-center justify-between mb-2">
-                                            <span className="text-xs font-semibold text-indigo-400 uppercase tracking-wider">Course</span>
-                                            <span className="font-bold text-emerald-400">{course.price > 0 ? `$${course.price}` : 'Free'}</span>
-                                        </div>
-                                        <h3 className="text-xl font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors">{course.title}</h3>
-                                        <p className="text-sm text-slate-400 line-clamp-3 mb-4">{course.description}</p>
-
-                                        <div className="flex items-center gap-2 pt-4 border-t border-white/5">
-                                            <div className="h-6 w-6 rounded-full bg-slate-700 flex items-center justify-center text-[10px] text-white font-bold">
-                                                {(course.profiles as any)?.full_name?.[0] || 'I'}
-                                            </div>
-                                            <span className="text-xs text-slate-500">{(course.profiles as any)?.full_name || 'Instructor'}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
+                            <div key={course.id} className="h-[400px]">
+                                <CourseCard course={course} />
+                            </div>
                         ))}
                     </div>
                 ) : (
