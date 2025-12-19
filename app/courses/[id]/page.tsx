@@ -73,9 +73,21 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                                     <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/20 p-4 text-center">
                                         <p className="text-emerald-400 font-semibold">You are enrolled!</p>
                                     </div>
-                                    <button className="w-full rounded-xl bg-indigo-600 py-3 font-semibold text-white hover:bg-indigo-500 transition-all">
+                                    <Link href={`/courses/${id}/learn`} className="block w-full text-center rounded-xl bg-indigo-600 py-3 font-semibold text-white hover:bg-indigo-500 transition-all">
                                         Continue Learning
-                                    </button>
+                                    </Link>
+                                </div>
+                            ) : !user ? (
+                                <div className="flex flex-col gap-3">
+                                    <Link
+                                        href={`/register?courseId=${id}`}
+                                        className="block w-full text-center rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 py-3 font-semibold text-white shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/50 transition-all hover:scale-[1.02]"
+                                    >
+                                        Enroll Now
+                                    </Link>
+                                    <p className="text-xs text-center text-slate-500">
+                                        Already have an account? <Link href="/login" className="text-indigo-400 hover:underline">Log in</Link>
+                                    </p>
                                 </div>
                             ) : (
                                 <form action={enrollAction}>

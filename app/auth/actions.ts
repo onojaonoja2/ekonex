@@ -31,6 +31,9 @@ export async function signup(formData: FormData) {
     const fullName = formData.get('fullName') as string
     const email = formData.get('email') as string
     const password = formData.get('password') as string
+    const role = (formData.get('role') as string) || 'student'
+    const organizationId = formData.get('organizationId') as string
+    const redirectUrl = formData.get('redirectUrl') as string
 
     const data = {
         email,
@@ -38,8 +41,10 @@ export async function signup(formData: FormData) {
         options: {
             data: {
                 full_name: fullName,
-                // default avatar or empty
-            }
+                role: role,
+                organization_id: organizationId || null,
+            },
+            emailRedirectTo: redirectUrl ? `${process.env.NEXT_PUBLIC_SITE_URL}${redirectUrl}` : undefined
         }
     }
 
@@ -47,12 +52,17 @@ export async function signup(formData: FormData) {
 
     if (error) {
         console.error('Signup Error:', error)
-        redirect('/login?error=' + encodeURIComponent(error.message))
+        redirect('/register?error=' + encodeURIComponent(error.message))
     }
 
     if (!authData.session) {
         // Email confirmation is required
         redirect('/login?message=Please check your email to confirm your account.')
+    }
+
+    if (redirectUrl) {
+        revalidatePath(redirectUrl)
+        redirect(redirectUrl)
     }
 
     revalidatePath('/', 'layout')

@@ -38,10 +38,10 @@ export default async function Home() {
           </Link>
 
           <Link
-            href="/login"
+            href="/get-started"
             className="flex h-12 items-center justify-center rounded-xl bg-slate-800/50 border border-slate-700/50 px-8 text-sm font-semibold text-slate-300 transition-all hover:bg-slate-800 hover:text-white"
           >
-            Log In
+            Get Started
           </Link>
         </div>
       </div>
