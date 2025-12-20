@@ -25,6 +25,7 @@ export async function updateProfile(formData: FormData) {
     })
 
     if (error) {
+        console.error('Profile Update Error:', error)
         return { error: 'Could not update profile' }
     }
 
