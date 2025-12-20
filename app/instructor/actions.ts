@@ -181,3 +181,26 @@ export async function deleteQuestion(questionId: string, quizId: string, courseI
         return { error: 'An unexpected error occurred' }
     }
 }
+
+export async function toggleCoursePublishStatus(courseId: string, isPublished: boolean) {
+    try {
+        const supabase = await createClient()
+
+        const { error } = await supabase.from('courses').update({
+            is_published: isPublished
+        }).eq('id', courseId)
+
+        if (error) {
+            console.error('Toggle Publish Status DB Error:', error)
+            return { error: 'Could not update course status' }
+        }
+
+        revalidatePath(`/instructor/courses/${courseId}`)
+        revalidatePath('/courses')
+        revalidatePath('/')
+        return { success: true }
+    } catch (e) {
+        console.error('Toggle Publish Status Unexpected Error:', e)
+        return { error: 'An unexpected error occurred' }
+    }
+}

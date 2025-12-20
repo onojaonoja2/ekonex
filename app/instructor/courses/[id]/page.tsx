@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import PublishButton from './publish-button'
 import ModulesList from './modules-list'
 import AiSyncButton from './ai-sync-button'
 
@@ -42,7 +43,8 @@ export default async function InstructorCourseDashboard({ params }: { params: Pr
                         <h1 className="text-3xl font-bold font-display text-white">{course.title}</h1>
                         <p className="text-slate-400">Manage your course content and settings</p>
                     </div>
-                    <div className="flex gap-3">
+                    <div className="flex items-center gap-3">
+                        <PublishButton courseId={course.id} isPublished={course.is_published} />
                         <div className={`px-3 py-1 rounded-full text-xs font-medium border ${course.is_published ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-yellow-500/10 border-yellow-500/20 text-yellow-400'}`}>
                             {course.is_published ? 'Published' : 'Draft'}
                         </div>

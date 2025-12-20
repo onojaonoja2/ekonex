@@ -2,16 +2,24 @@ import Link from "next/link";
 import { createClient } from '@/utils/supabase/server'
 import { CourseCard } from "@/components/course-card";
 
+export const dynamic = 'force-dynamic'
+
 export default async function Home() {
   const supabase = await createClient()
 
   // Fetch published courses (limit 3 for home page)
-  const { data: courses } = await supabase
+  const { data: courses, error } = await supabase
     .from('courses')
     .select('*, profiles(full_name)')
     .eq('is_published', true)
     .order('created_at', { ascending: false })
     .limit(3)
+
+  console.log('Home Page Courses Fetch:', { courses, error })
+
+  if (error) {
+    console.error('Error fetching courses:', error)
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center p-8 relative overflow-hidden bg-slate-950">
