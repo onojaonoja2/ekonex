@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { NotificationsDropdown } from '@/components/ui/notifications-dropdown'
 import { createClient } from '@/utils/supabase/server'
+import ProfileDropdown from '@/components/profile-dropdown'
 
 export default async function InstructorLayout({
     children,
@@ -31,8 +32,9 @@ export default async function InstructorLayout({
                     </div>
 
                     <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-                        <nav className="flex items-center gap-2">
+                        <nav className="flex items-center gap-4">
                             {user && <NotificationsDropdown />}
+                            {user && <ProfileDropdown email={user.email!} fullName={user.user_metadata?.full_name} role="instructor" />}
                         </nav>
                     </div>
                 </div>

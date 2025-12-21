@@ -204,3 +204,42 @@ export async function toggleCoursePublishStatus(courseId: string, isPublished: b
         return { error: 'An unexpected error occurred' }
     }
 }
+
+export async function deleteCourse(courseId: string) {
+    try {
+        const supabase = await createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+
+        if (!user) {
+            return { error: 'Unauthorized' }
+        }
+
+        // Verify ownership
+        const { data: course } = await supabase
+            .from('courses')
+            .select('instructor_id')
+            .eq('id', courseId)
+            .single()
+
+        if (!course || course.instructor_id !== user.id) {
+            return { error: 'Unauthorized: You do not own this course' }
+        }
+
+        const { error } = await supabase
+            .from('courses')
+            .delete()
+            .eq('id', courseId)
+
+        if (error) {
+            console.error('Delete Course DB Error:', error)
+            return { error: 'Could not delete course' }
+        }
+
+        revalidatePath('/instructor/courses')
+        revalidatePath('/')
+        return { success: true }
+    } catch (e) {
+        console.error('Delete Course Unexpected Error:', e)
+        return { error: 'An unexpected error occurred' }
+    }
+}
