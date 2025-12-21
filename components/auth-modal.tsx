@@ -28,12 +28,29 @@ export default function AuthModal({ isOpen, onClose, courseId }: AuthModalProps)
 
         try {
             if (mode === 'login') {
-                const { error } = await supabase.auth.signInWithPassword({
+                const { data: { user }, error } = await supabase.auth.signInWithPassword({
                     email,
                     password,
                 })
                 if (error) throw error
                 toast.success('Logged in successfully')
+
+                // Determine redirect based on role
+                if (user) {
+                    const { data: profile } = await supabase
+                        .from('profiles')
+                        .select('role')
+                        .eq('id', user.id)
+                        .single()
+
+                    if (profile?.role === 'instructor') {
+                        router.push('/instructor/dashboard')
+                    } else {
+                        router.push('/student/dashboard')
+                    }
+                } else {
+                    router.refresh()
+                }
             } else {
                 const { data, error } = await supabase.auth.signUp({
                     email,

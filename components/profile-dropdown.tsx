@@ -60,7 +60,7 @@ export default function ProfileDropdown({ email, fullName, role }: ProfileDropdo
                             </Link>
                             {role === 'student' && (
                                 <Link
-                                    href="/profile" // Assuming profile is the dashboard for students
+                                    href="/student/dashboard"
                                     onClick={() => setIsOpen(false)}
                                     className="flex items-center gap-2 w-full px-3 py-2 text-sm text-slate-300 hover:bg-slate-800 rounded-lg transition-colors"
                                 >
@@ -70,7 +70,7 @@ export default function ProfileDropdown({ email, fullName, role }: ProfileDropdo
                             )}
                             {role === 'instructor' && (
                                 <Link
-                                    href="/instructor/courses"
+                                    href="/instructor/dashboard"
                                     onClick={() => setIsOpen(false)}
                                     className="flex items-center gap-2 w-full px-3 py-2 text-sm text-slate-300 hover:bg-slate-800 rounded-lg transition-colors"
                                 >

@@ -20,6 +20,25 @@ export async function login(formData: FormData) {
         redirect('/login?error=' + encodeURIComponent(error.message))
     }
 
+    // Fetch user profile to determine role
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (user) {
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single()
+
+        revalidatePath('/', 'layout')
+
+        if (profile?.role === 'instructor') {
+            redirect('/instructor/dashboard')
+        } else {
+            redirect('/student/dashboard')
+        }
+    }
+
     revalidatePath('/', 'layout')
     redirect('/')
 }
