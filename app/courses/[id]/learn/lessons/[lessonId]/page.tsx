@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { markLessonComplete } from '@/app/courses/actions'
 import { redirect } from 'next/navigation'
+import LessonRenderer from '@/components/lesson-renderer'
 
 export default async function LessonPage({ params }: { params: Promise<{ id: string, lessonId: string }> }) {
     const supabase = await createClient()
@@ -46,9 +47,16 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     />
                 ) : (
-                    <div className="max-w-3xl mx-auto p-12 text-slate-300 prose prose-invert">
-                        <h1>{lesson.title}</h1>
-                        <div className="whitespace-pre-wrap">{lesson.content_text}</div>
+                    <div className="w-full h-full overflow-y-auto bg-slate-950 p-8 md:p-12">
+                        {/* Fallback to old text content if no blocks, OR just use blocks */}
+                        {lesson.content_blocks && lesson.content_blocks.length > 0 ? (
+                            <LessonRenderer blocks={lesson.content_blocks} />
+                        ) : (
+                            <div className="max-w-3xl mx-auto prose prose-invert">
+                                <h1>{lesson.title}</h1>
+                                <div className="whitespace-pre-wrap">{lesson.content_text}</div>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
@@ -63,6 +71,6 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
                     </button>
                 </form>
             </div>
-        </div>
+        </div >
     )
 }
