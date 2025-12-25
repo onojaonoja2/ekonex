@@ -69,9 +69,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                                 {course.price > 0 && <span className="text-slate-500 text-sm ml-2 line-through">$99.99</span>}
                             </div>
 
-                            import EnrollButton from './enroll-button'
 
-                            // ...
 
                             {isEnrolled ? (
                                 <div className="flex flex-col gap-4">
