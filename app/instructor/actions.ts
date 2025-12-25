@@ -65,7 +65,7 @@ export async function createLesson(moduleId: string, courseId: string, formData:
         // Log input for debugging
         console.log('Creating lesson:', { moduleId, courseId, title, contentType })
 
-        const { error } = await supabase.from('lessons').insert({
+        const { data, error } = await supabase.from('lessons').insert({
             module_id: moduleId,
             title,
             content_type: contentType,
@@ -73,7 +73,7 @@ export async function createLesson(moduleId: string, courseId: string, formData:
             content_text: contentText,
             is_free_preview: isFreePreview,
             position: 0
-        })
+        }).select().single()
 
         if (error) {
             console.error('Create Lesson DB Error:', error)
@@ -81,7 +81,7 @@ export async function createLesson(moduleId: string, courseId: string, formData:
         }
 
         revalidatePath(`/instructor/courses/${courseId}`)
-        return { success: true }
+        return { success: true, id: data.id }
     } catch (e) {
         console.error('Create Lesson Unexpected Error:', e)
         return { error: 'An unexpected error occurred while creating the lesson' }

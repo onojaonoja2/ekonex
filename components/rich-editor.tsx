@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 
 export type ContentBlock = {
     id: string
-    type: 'text' | 'image' | 'code' | 'pdf' | 'slides'
+    type: 'text' | 'image' | 'code' | 'pdf' | 'slides' | 'video'
     content: string
     meta?: any
 }
@@ -164,6 +164,63 @@ export default function RichEditor({
                                 {/* Could add multi-file uploader here but keeping it simple for now */}
                             </div>
                         )}
+
+                        {block.type === 'video' && (
+                            <div className="space-y-4">
+                                <div className="flex gap-4 border-b border-slate-800 pb-2">
+                                    <button
+                                        onClick={() => updateBlock(block.id, '', { sourceType: 'url' })}
+                                        className={`text-xs font-semibold px-2 py-1 rounded ${!block.meta?.sourceType || block.meta?.sourceType === 'url' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-indigo-400'}`}
+                                    >
+                                        Embed URL (YouTube)
+                                    </button>
+                                    <button
+                                        onClick={() => updateBlock(block.id, '', { sourceType: 'upload' })}
+                                        className={`text-xs font-semibold px-2 py-1 rounded ${block.meta?.sourceType === 'upload' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-indigo-400'}`}
+                                    >
+                                        Upload Video
+                                    </button>
+                                </div>
+
+                                {block.meta?.sourceType === 'upload' ? (
+                                    <>
+                                        {block.content ? (
+                                            <div className="relative rounded-lg overflow-hidden border border-slate-700 bg-black">
+                                                <video src={block.content} controls className="max-h-64 mx-auto" />
+                                                <button
+                                                    onClick={() => updateBlock(block.id, '')}
+                                                    className="absolute top-2 right-2 bg-black/50 text-white p-1 rounded hover:bg-black/70"
+                                                >
+                                                    Change
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <div className="border-2 border-dashed border-slate-800 rounded-lg p-8 flex flex-col items-center justify-center hover:border-indigo-500/50 hover:bg-indigo-500/5 transition-all">
+                                                <input
+                                                    type="file"
+                                                    accept="video/*"
+                                                    onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], block.id)}
+                                                    className="hidden"
+                                                    id={`upload-${block.id}`}
+                                                />
+                                                <label htmlFor={`upload-${block.id}`} className="cursor-pointer flex flex-col items-center gap-2">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-500"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
+                                                    <span className="text-sm font-medium text-slate-400">Upload Video</span>
+                                                </label>
+                                            </div>
+                                        )}
+                                    </>
+                                ) : (
+                                    <input
+                                        type="url"
+                                        value={block.content}
+                                        onChange={(e) => updateBlock(block.id, e.target.value)}
+                                        placeholder="Paste YouTube or Vimeo URL..."
+                                        className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-slate-300 focus:outline-none focus:border-indigo-500"
+                                    />
+                                )}
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>
@@ -174,7 +231,8 @@ export default function RichEditor({
                 <button onClick={() => addBlock('code')} className="px-3 py-2 rounded-lg bg-slate-800 text-xs font-medium text-white hover:bg-slate-700 transition-colors">+ Code</button>
                 <button onClick={() => addBlock('pdf')} className="px-3 py-2 rounded-lg bg-slate-800 text-xs font-medium text-white hover:bg-slate-700 transition-colors">+ PDF</button>
                 <button onClick={() => addBlock('slides')} className="px-3 py-2 rounded-lg bg-slate-800 text-xs font-medium text-white hover:bg-slate-700 transition-colors">+ Slides</button>
+                <button onClick={() => addBlock('video')} className="px-3 py-2 rounded-lg bg-slate-800 text-xs font-medium text-white hover:bg-slate-700 transition-colors">+ Video</button>
             </div>
-        </div>
+        </div >
     )
 }

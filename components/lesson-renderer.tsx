@@ -54,6 +54,22 @@ export default function LessonRenderer({ blocks }: { blocks: ContentBlock[] }) {
                     {block.type === 'slides' && block.content && (
                         <SlideViewer content={block.content} />
                     )}
+
+                    {block.type === 'video' && block.content && (
+                        <div className="rounded-xl overflow-hidden border border-slate-800 bg-black aspect-video relative">
+                            {/* Check if it's a raw file URL (upload) or an embeddable URL */}
+                            {block.content.includes('supabase.co') || block.meta?.sourceType === 'upload' ? (
+                                <video src={block.content} controls className="w-full h-full" />
+                            ) : (
+                                <iframe
+                                    src={getEmbedUrl(block.content)}
+                                    className="w-full h-full absolute inset-0"
+                                    allowFullScreen
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                />
+                            )}
+                        </div>
+                    )}
                 </div>
             ))}
         </div>

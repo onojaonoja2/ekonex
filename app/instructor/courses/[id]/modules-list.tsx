@@ -97,28 +97,48 @@ export default function ModulesList({ courseId, modules }: { courseId: string, m
                         {addingLessonToModule === module.id && (
                             <div className="p-4 bg-slate-900/50 border-b border-slate-800">
                                 <h3 className="text-xs font-semibold uppercase text-slate-500 mb-3">New Lesson</h3>
-                                <form action={(fd) => handleAddLesson(module.id, fd)} className="space-y-3">
-                                    <input name="title" required placeholder="Lesson Title" className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-indigo-500 outline-none" />
-
-                                    <div className="flex gap-4">
-                                        <select name="contentType" className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 outline-none">
-                                            <option value="text">Text / Article</option>
-                                            <option value="video">Video URL</option>
-                                        </select>
-                                        <div className="flex items-center gap-2">
-                                            <input type="checkbox" name="isFreePreview" id="free" className="rounded border-slate-700 bg-slate-950 text-indigo-600" />
-                                            <label htmlFor="free" className="text-sm text-slate-400">Free Preview</label>
-                                        </div>
-                                    </div>
-
-                                    <input name="contentUrl" placeholder="Video URL (Youtube/Vimeo) - if video selected" className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-indigo-500 outline-none" />
-                                    <textarea name="contentText" placeholder="Lesson Content (for text lessons)" rows={3} className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-indigo-500 outline-none" />
+                                <div className="space-y-3">
+                                    <input
+                                        id={`lesson-title-${module.id}`}
+                                        name="title"
+                                        required
+                                        placeholder="Lesson Title"
+                                        className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 focus:border-indigo-500 outline-none"
+                                    />
 
                                     <div className="flex gap-2 justify-end">
-                                        <button type="button" onClick={() => setAddingLessonToModule(null)} className="px-3 py-1.5 text-xs font-semibold text-slate-400 hover:text-white">Cancel</button>
-                                        <button type="submit" className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-500">Add Lesson</button>
+                                        <button
+                                            type="button"
+                                            onClick={() => setAddingLessonToModule(null)}
+                                            className="px-3 py-1.5 text-xs font-semibold text-slate-400 hover:text-white"
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            onClick={async () => {
+                                                const input = document.getElementById(`lesson-title-${module.id}`) as HTMLInputElement
+                                                if (!input.value) return toast.error('Please enter a title')
+
+                                                const formData = new FormData()
+                                                formData.set('title', input.value)
+                                                // Default to text, user will edit in rich editor
+                                                formData.set('contentType', 'text')
+
+                                                const result = await createLesson(module.id, courseId, formData)
+                                                if (result?.error) {
+                                                    toast.error(result.error)
+                                                } else if (result?.id) {
+                                                    toast.success('Lesson created')
+                                                    // Redirect to editor
+                                                    window.location.href = `/instructor/lessons/${result.id}`
+                                                }
+                                            }}
+                                            className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-500"
+                                        >
+                                            Create & Edit Content
+                                        </button>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         )}
 
