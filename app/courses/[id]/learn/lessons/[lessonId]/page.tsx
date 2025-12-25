@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { markLessonComplete } from '@/app/courses/actions'
 import { redirect } from 'next/navigation'
+import LessonRenderer from '@/components/lesson-renderer'
 
 export default async function LessonPage({ params }: { params: Promise<{ id: string, lessonId: string }> }) {
     const supabase = await createClient()
@@ -20,20 +21,42 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
     // Bind server action
     const completeAction = markLessonComplete.bind(null, lesson.id, courseId)
 
+    // Helper to extract video ID and format embed URL
+    const getEmbedUrl = (url: string) => {
+        if (!url) return '';
+
+        // Handle various YouTube formats
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+        const match = url.match(regExp);
+
+        if (match && match[2].length === 11) {
+            return `https://www.youtube.com/embed/${match[2]}`;
+        }
+
+        return url;
+    }
+
     return (
         <div className="flex flex-col h-full">
             <div className="flex-1 bg-black flex items-center justify-center relative group">
                 {lesson.content_type === 'video' && lesson.content_url ? (
                     <iframe
-                        src={lesson.content_url.replace('watch?v=', 'embed/')}
+                        src={getEmbedUrl(lesson.content_url)}
                         className="w-full h-full absolute inset-0"
                         allowFullScreen
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     />
                 ) : (
-                    <div className="max-w-3xl mx-auto p-12 text-slate-300 prose prose-invert">
-                        <h1>{lesson.title}</h1>
-                        <div className="whitespace-pre-wrap">{lesson.content_text}</div>
+                    <div className="w-full h-full overflow-y-auto bg-slate-950 p-8 md:p-12">
+                        {/* Fallback to old text content if no blocks, OR just use blocks */}
+                        {lesson.content_blocks && lesson.content_blocks.length > 0 ? (
+                            <LessonRenderer blocks={lesson.content_blocks} />
+                        ) : (
+                            <div className="max-w-3xl mx-auto prose prose-invert">
+                                <h1>{lesson.title}</h1>
+                                <div className="whitespace-pre-wrap">{lesson.content_text}</div>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
@@ -48,6 +71,6 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
                     </button>
                 </form>
             </div>
-        </div>
+        </div >
     )
 }

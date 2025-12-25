@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server'
 import { enrollInCourse } from '../actions'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import EnrollButton from './enroll-button'
 
 export default async function CourseDetailsPage({ params }: { params: Promise<{ id: string }> }) {
     const supabase = await createClient()
@@ -68,6 +69,8 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                                 {course.price > 0 && <span className="text-slate-500 text-sm ml-2 line-through">$99.99</span>}
                             </div>
 
+
+
                             {isEnrolled ? (
                                 <div className="flex flex-col gap-4">
                                     <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/20 p-4 text-center">
@@ -77,25 +80,21 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                                         Continue Learning
                                     </Link>
                                 </div>
-                            ) : !user ? (
-                                <div className="flex flex-col gap-3">
-                                    <Link
-                                        href={`/register?courseId=${id}`}
-                                        className="block w-full text-center rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 py-3 font-semibold text-white shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/50 transition-all hover:scale-[1.02]"
-                                    >
-                                        Enroll Now
-                                    </Link>
-                                    <p className="text-xs text-center text-slate-500">
-                                        Already have an account? <Link href="/login" className="text-indigo-400 hover:underline">Log in</Link>
-                                    </p>
-                                </div>
                             ) : (
-                                <form action={enrollAction}>
-                                    <button type="submit" className="w-full rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 py-3 font-semibold text-white shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/50 transition-all hover:scale-[1.02]">
-                                        {course.price > 0 ? 'Buy Now' : 'Enroll for Free'}
-                                    </button>
+                                <div>
+                                    <EnrollButton
+                                        courseId={course.id}
+                                        isLoggedIn={!!user}
+                                        price={course.price}
+                                        enrollAction={enrollAction}
+                                    />
                                     <p className="mt-4 text-xs text-center text-slate-500">30-day money-back guarantee • Lifetime access</p>
-                                </form>
+                                    {!user && (
+                                        <p className="mt-3 text-xs text-center text-slate-500">
+                                            Already have an account? <Link href="/login" className="text-indigo-400 hover:underline">Log in</Link>
+                                        </p>
+                                    )}
+                                </div>
                             )}
                         </div>
                     </div>

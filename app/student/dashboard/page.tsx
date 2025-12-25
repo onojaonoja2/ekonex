@@ -1,10 +1,9 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
-import ProfileForm from './profile-form'
 import Link from 'next/link'
 import ProfileDropdown from '@/components/profile-dropdown'
 
-export default async function ProfilePage() {
+export default async function StudentDashboard() {
     const supabase = await createClient()
 
     const {
@@ -15,11 +14,17 @@ export default async function ProfilePage() {
         redirect('/login')
     }
 
+    // Fetch Profile
     const { data: profile } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.id)
         .single()
+
+    // Redirect if instructor (optional, keeps roles strict)
+    if (profile?.role === 'instructor') {
+        redirect('/instructor/dashboard')
+    }
 
     // Fetch enrolled courses
     const { data: enrollments } = await supabase
@@ -27,38 +32,33 @@ export default async function ProfilePage() {
         .select('*, courses(*)')
         .eq('user_id', user.id)
 
-    // Merge profile data with user email 
-    const profileData = {
-        ...profile,
-        email: user.email,
-    }
-
     return (
-        <div className="min-h-screen bg-transparent p-8 flex flex-col items-center">
-            <div className="w-full max-w-5xl">
-                <div className="flex justify-end mb-4">
-                    <ProfileDropdown email={user.email!} fullName={profileData.full_name} role={profileData.role || 'student'} />
+        <div className="min-h-screen bg-slate-950 p-8">
+            <div className="mx-auto max-w-7xl">
+                <div className="flex justify-end mb-4 md:hidden">
+                    {/* Mobile profile dropdown if needed, though usually in layout */}
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     {/* Sidebar / Profile Card */}
                     <div className="lg:col-span-1 space-y-6">
-                        <div className="glass rounded-2xl p-6 text-center">
+                        <div className="glass rounded-2xl p-6 text-center border border-slate-800">
                             <div className="h-24 w-24 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center text-3xl font-bold text-white shadow-xl shadow-indigo-500/20 mx-auto mb-4">
-                                {profileData.full_name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase()}
+                                {profile?.full_name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase()}
                             </div>
-                            <h3 className="font-semibold text-lg text-white">{profileData.full_name || 'User'}</h3>
+                            <h3 className="font-semibold text-lg text-white">{profile?.full_name || 'Student'}</h3>
                             <p className="text-sm text-slate-500 mb-6">{user.email}</p>
 
-                            <div className="text-left border-t border-slate-700/50 pt-6 mt-6">
-                                <h4 className="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-4">Account Settings</h4>
-                                <ProfileForm profile={profileData} />
+                            <div className="border-t border-slate-800 pt-6 mt-6">
+                                <Link href="/profile" className="block w-full rounded-xl bg-slate-800 py-2 text-sm font-medium text-slate-300 hover:bg-slate-700 hover:text-white transition-colors">
+                                    Edit Profile
+                                </Link>
                             </div>
                         </div>
                     </div>
 
                     {/* Main Content / Enrolled Courses */}
-                    <div className="lg:col-span-2">
+                    <div className="lg:col-span-3">
                         <div className="mb-8">
                             <h1 className="text-3xl font-bold font-display text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-400">
                                 My Learning
@@ -69,30 +69,34 @@ export default async function ProfilePage() {
                         </div>
 
                         {enrollments && enrollments.length > 0 ? (
-                            <div className="space-y-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {enrollments.map((enrollment) => (
-                                    <Link key={enrollment.id} href={`/courses/${enrollment.course_id}/learn`} className="block group">
-                                        <div className="glass rounded-xl p-4 flex gap-4 transition-all hover:bg-slate-800/60 hover:scale-[1.01] border border-slate-700/50">
+                                    <Link key={enrollment.id} href={`/courses/${enrollment.course_id}/learn`} className="block group h-full">
+                                        <div className="glass h-full rounded-xl p-4 flex flex-col gap-4 transition-all hover:bg-slate-800/60 hover:scale-[1.01] border border-slate-800">
                                             {/* Course Image Placeholder */}
-                                            <div className="h-24 w-32 bg-slate-800 rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden">
+                                            <div className="h-40 w-full bg-slate-800 rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden border border-slate-700 relative">
                                                 {enrollment.courses.cover_image ? (
                                                     // eslint-disable-next-line @next/next/no-img-element
                                                     <img src={enrollment.courses.cover_image} alt={enrollment.courses.title} className="w-full h-full object-cover" />
                                                 ) : (
-                                                    <span className="text-2xl font-bold text-slate-600">{enrollment.courses.title[0]}</span>
+                                                    <span className="text-4xl font-bold text-slate-600">{enrollment.courses.title[0]}</span>
                                                 )}
+                                                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
                                             </div>
 
-                                            <div className="flex-1 py-1">
-                                                <h3 className="font-bold text-white group-hover:text-indigo-400 transition-colors mb-2">{enrollment.courses.title}</h3>
-                                                <p className="text-sm text-slate-400 line-clamp-2">{enrollment.courses.description || 'No description'}</p>
+                                            <div className="flex-1 flex flex-col">
+                                                <h3 className="font-bold text-lg text-white group-hover:text-indigo-400 transition-colors mb-2">{enrollment.courses.title}</h3>
+                                                <p className="text-sm text-slate-400 line-clamp-2 mb-4 flex-1">{enrollment.courses.description || 'No description'}</p>
 
                                                 {/* Progress Bar (Placeholder for now) */}
-                                                <div className="mt-4 flex items-center gap-3">
-                                                    <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                                <div className="mt-auto">
+                                                    <div className="flex items-center justify-between text-xs text-slate-500 mb-1">
+                                                        <span>Progress</span>
+                                                        <span>0%</span>
+                                                    </div>
+                                                    <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
                                                         <div className="h-full bg-emerald-500 w-[0%]"></div>
                                                     </div>
-                                                    <span className="text-xs text-slate-500 font-medium">0% Complete</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -100,7 +104,7 @@ export default async function ProfilePage() {
                                 ))}
                             </div>
                         ) : (
-                            <div className="glass rounded-2xl p-12 text-center border-dashed border-slate-700">
+                            <div className="glass rounded-2xl p-12 text-center border-dashed border-slate-800">
                                 <div className="h-16 w-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-500">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" /></svg>
                                 </div>

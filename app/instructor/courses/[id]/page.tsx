@@ -2,8 +2,10 @@ import { createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import PublishButton from './publish-button'
+import DeleteCourseButton from './delete-course-button'
 import ModulesList from './modules-list'
 import AiSyncButton from './ai-sync-button'
+import CoverImageUpload from './cover-image-upload'
 
 export default async function InstructorCourseDashboard({ params }: { params: Promise<{ id: string }> }) {
     const supabase = await createClient()
@@ -44,6 +46,7 @@ export default async function InstructorCourseDashboard({ params }: { params: Pr
                         <p className="text-slate-400">Manage your course content and settings</p>
                     </div>
                     <div className="flex items-center gap-3">
+                        <DeleteCourseButton courseId={course.id} />
                         <PublishButton courseId={course.id} isPublished={course.is_published} />
                         <div className={`px-3 py-1 rounded-full text-xs font-medium border ${course.is_published ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-yellow-500/10 border-yellow-500/20 text-yellow-400'}`}>
                             {course.is_published ? 'Published' : 'Draft'}
@@ -61,8 +64,14 @@ export default async function InstructorCourseDashboard({ params }: { params: Pr
                     <div className="space-y-6">
                         <div className="rounded-2xl glass p-6 border border-slate-800">
                             <h2 className="text-lg font-semibold text-white mb-4">Course Settings</h2>
-                            <div className="space-y-4">
+                            <div className="space-y-6">
+                                <div>
+                                    <label className="text-xs font-semibold text-slate-500 uppercase mb-2 block">Cover Image</label>
+                                    <CoverImageUpload courseId={course.id} url={course.cover_image} />
+                                </div>
+
                                 <AiSyncButton courseId={course.id} />
+
 
                                 <div>
                                     <label className="text-xs font-semibold text-slate-500 uppercase">Price</label>

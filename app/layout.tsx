@@ -3,6 +3,8 @@ import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import { Toaster } from 'sonner';
 import Link from 'next/link';
+import { createClient } from '@/utils/supabase/server';
+import ProfileDropdown from '@/components/profile-dropdown';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -19,11 +21,24 @@ export const metadata: Metadata = {
   description: "Next-gen Learning Management System",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = await createClient();
+
+  const { data: { user } } = await supabase.auth.getUser();
+
+  let profile = null;
+  if (user) {
+    const { data } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single();
+    profile = data;
+  }
   return (
     <html lang="en">
       <body
@@ -41,6 +56,23 @@ export default function RootLayout({
                     <span className="hidden md:block text-[10px] text-slate-500 uppercase tracking-widest font-medium">Next level in digital education</span>
                   </div>
                 </Link>
+              </div>
+
+              <div className="flex items-center gap-4">
+                {user ? (
+                  <>
+                    {/* <NotificationsDropdown /> - Can render here if generic, or keep specific */}
+                    <ProfileDropdown
+                      email={user.email!}
+                      fullName={profile?.full_name}
+                      role={profile?.role || 'student'}
+                    />
+                  </>
+                ) : (
+                  <Link href="/login" className="text-sm font-semibold text-white hover:text-indigo-400 transition-colors">
+                    Log In
+                  </Link>
+                )}
               </div>
             </div>
           </div>

@@ -16,14 +16,15 @@ export async function updateProfile(formData: FormData) {
     const website = formData.get('website') as string
     const avatarUrl = formData.get('avatarUrl') as string
 
-    const { error } = await supabase.from('profiles').upsert({
-        id: user.id,
-        full_name: fullName,
-        website,
-        avatar_url: avatarUrl,
-        updated_at: new Date().toISOString(),
-    })
-
+    const { error } = await supabase
+        .from('profiles')
+        .update({
+            full_name: fullName,
+            website,
+            avatar_url: avatarUrl,
+            updated_at: new Date().toISOString(),
+        })
+        .eq('id', user.id)
     if (error) {
         console.error('Profile Update Error:', error)
         return { error: 'Could not update profile' }

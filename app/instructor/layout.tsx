@@ -31,8 +31,9 @@ export default async function InstructorLayout({
                     </div>
 
                     <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-                        <nav className="flex items-center gap-2">
+                        <nav className="flex items-center gap-4">
                             {user && <NotificationsDropdown />}
+                            {/* ProfileDropdown is now in Global Header */}
                         </nav>
                     </div>
                 </div>

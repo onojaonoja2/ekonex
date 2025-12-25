@@ -65,7 +65,7 @@ export async function createLesson(moduleId: string, courseId: string, formData:
         // Log input for debugging
         console.log('Creating lesson:', { moduleId, courseId, title, contentType })
 
-        const { error } = await supabase.from('lessons').insert({
+        const { data, error } = await supabase.from('lessons').insert({
             module_id: moduleId,
             title,
             content_type: contentType,
@@ -73,7 +73,7 @@ export async function createLesson(moduleId: string, courseId: string, formData:
             content_text: contentText,
             is_free_preview: isFreePreview,
             position: 0
-        })
+        }).select().single()
 
         if (error) {
             console.error('Create Lesson DB Error:', error)
@@ -81,7 +81,7 @@ export async function createLesson(moduleId: string, courseId: string, formData:
         }
 
         revalidatePath(`/instructor/courses/${courseId}`)
-        return { success: true }
+        return { success: true, id: data.id }
     } catch (e) {
         console.error('Create Lesson Unexpected Error:', e)
         return { error: 'An unexpected error occurred while creating the lesson' }
@@ -201,6 +201,45 @@ export async function toggleCoursePublishStatus(courseId: string, isPublished: b
         return { success: true }
     } catch (e) {
         console.error('Toggle Publish Status Unexpected Error:', e)
+        return { error: 'An unexpected error occurred' }
+    }
+}
+
+export async function deleteCourse(courseId: string) {
+    try {
+        const supabase = await createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+
+        if (!user) {
+            return { error: 'Unauthorized' }
+        }
+
+        // Verify ownership
+        const { data: course } = await supabase
+            .from('courses')
+            .select('instructor_id')
+            .eq('id', courseId)
+            .single()
+
+        if (!course || course.instructor_id !== user.id) {
+            return { error: 'Unauthorized: You do not own this course' }
+        }
+
+        const { error } = await supabase
+            .from('courses')
+            .delete()
+            .eq('id', courseId)
+
+        if (error) {
+            console.error('Delete Course DB Error:', error)
+            return { error: 'Could not delete course' }
+        }
+
+        revalidatePath('/instructor/courses')
+        revalidatePath('/')
+        return { success: true }
+    } catch (e) {
+        console.error('Delete Course Unexpected Error:', e)
         return { error: 'An unexpected error occurred' }
     }
 }
