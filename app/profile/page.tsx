@@ -27,6 +27,43 @@ export default async function ProfilePage() {
         .select('*, courses(*)')
         .eq('user_id', user.id)
 
+    // START: Progress Calculation Logic
+    const courseIds = enrollments?.map(e => e.course_id) || []
+
+    // Fetch all lessons for these courses to determine total count
+    // We join with modules to get the course_id
+    const { data: allLessons } = await supabase
+        .from('lessons')
+        .select('id, modules!inner(course_id)')
+        .in('modules.course_id', courseIds)
+
+    // Fetch user's completed lessons
+    const { data: userProgress } = await supabase
+        .from('user_progress')
+        .select('lesson_id')
+        .eq('user_id', user.id)
+        .eq('is_completed', true)
+
+    const progressMap: Record<string, number> = {}
+
+    enrollments?.forEach(enrollment => {
+        const courseId = enrollment.course_id
+        // Filter lessons belonging to this course
+        // @ts-ignore - Supabase types join mapping can be tricky, assuming structure is correct
+        const courseLessons = allLessons?.filter((l: any) => l.modules?.course_id === courseId) || []
+        const totalLessons = courseLessons.length
+
+        if (totalLessons === 0) {
+            progressMap[courseId] = 0
+        } else {
+            const completedCount = courseLessons.filter((l: any) =>
+                userProgress?.some(p => p.lesson_id === l.id)
+            ).length
+            progressMap[courseId] = Math.round((completedCount / totalLessons) * 100)
+        }
+    })
+    // END: Progress Calculation Logic
+
     // Merge profile data with user email 
     const profileData = {
         ...profile,
@@ -37,16 +74,28 @@ export default async function ProfilePage() {
         <div className="min-h-screen bg-transparent p-8 flex flex-col items-center">
             <div className="w-full max-w-5xl">
                 <div className="flex justify-end mb-4">
-                    <ProfileDropdown email={user.email!} fullName={profileData.full_name} role={profileData.role || 'student'} />
+                    <ProfileDropdown
+                        email={user.email!}
+                        fullName={profileData.full_name}
+                        role={profileData.role || 'student'}
+                        avatarUrl={profileData.avatar_url}
+                    />
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Sidebar / Profile Card */}
                     <div className="lg:col-span-1 space-y-6">
                         <div className="glass rounded-2xl p-6 text-center">
-                            <div className="h-24 w-24 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center text-3xl font-bold text-white shadow-xl shadow-indigo-500/20 mx-auto mb-4">
-                                {profileData.full_name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase()}
-                            </div>
+                            {profileData.avatar_url ? (
+                                <div className="h-24 w-24 rounded-full overflow-hidden border-4 border-slate-800 mx-auto mb-4 shadow-xl shadow-indigo-500/20">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img src={profileData.avatar_url} alt={profileData.full_name || 'User'} className="h-full w-full object-cover" />
+                                </div>
+                            ) : (
+                                <div className="h-24 w-24 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center text-3xl font-bold text-white shadow-xl shadow-indigo-500/20 mx-auto mb-4">
+                                    {profileData.full_name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase()}
+                                </div>
+                            )}
                             <h3 className="font-semibold text-lg text-white">{profileData.full_name || 'User'}</h3>
                             <p className="text-sm text-slate-500 mb-6">{user.email}</p>
 
@@ -70,34 +119,41 @@ export default async function ProfilePage() {
 
                         {enrollments && enrollments.length > 0 ? (
                             <div className="space-y-4">
-                                {enrollments.map((enrollment) => (
-                                    <Link key={enrollment.id} href={`/courses/${enrollment.course_id}/learn`} className="block group">
-                                        <div className="glass rounded-xl p-4 flex gap-4 transition-all hover:bg-slate-800/60 hover:scale-[1.01] border border-slate-700/50">
-                                            {/* Course Image Placeholder */}
-                                            <div className="h-24 w-32 bg-slate-800 rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden">
-                                                {enrollment.courses.cover_image ? (
-                                                    // eslint-disable-next-line @next/next/no-img-element
-                                                    <img src={enrollment.courses.cover_image} alt={enrollment.courses.title} className="w-full h-full object-cover" />
-                                                ) : (
-                                                    <span className="text-2xl font-bold text-slate-600">{enrollment.courses.title[0]}</span>
-                                                )}
-                                            </div>
+                                {enrollments.map((enrollment) => {
+                                    const progress = progressMap[enrollment.course_id] || 0
 
-                                            <div className="flex-1 py-1">
-                                                <h3 className="font-bold text-white group-hover:text-indigo-400 transition-colors mb-2">{enrollment.courses.title}</h3>
-                                                <p className="text-sm text-slate-400 line-clamp-2">{enrollment.courses.description || 'No description'}</p>
+                                    return (
+                                        <Link key={enrollment.id} href={`/courses/${enrollment.course_id}/learn`} className="block group">
+                                            <div className="glass rounded-xl p-4 flex gap-4 transition-all hover:bg-slate-800/60 hover:scale-[1.01] border border-slate-700/50">
+                                                {/* Course Image Placeholder */}
+                                                <div className="h-24 w-32 bg-slate-800 rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden">
+                                                    {enrollment.courses.cover_image ? (
+                                                        // eslint-disable-next-line @next/next/no-img-element
+                                                        <img src={enrollment.courses.cover_image} alt={enrollment.courses.title} className="w-full h-full object-cover" />
+                                                    ) : (
+                                                        <span className="text-2xl font-bold text-slate-600">{enrollment.courses.title[0]}</span>
+                                                    )}
+                                                </div>
 
-                                                {/* Progress Bar (Placeholder for now) */}
-                                                <div className="mt-4 flex items-center gap-3">
-                                                    <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                                                        <div className="h-full bg-emerald-500 w-[0%]"></div>
+                                                <div className="flex-1 py-1">
+                                                    <h3 className="font-bold text-white group-hover:text-indigo-400 transition-colors mb-2">{enrollment.courses.title}</h3>
+                                                    <p className="text-sm text-slate-400 line-clamp-2">{enrollment.courses.description || 'No description'}</p>
+
+                                                    {/* Progress Bar */}
+                                                    <div className="mt-4 flex items-center gap-3">
+                                                        <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                                            <div
+                                                                className="h-full bg-emerald-500"
+                                                                style={{ width: `${progress}%` }}
+                                                            />
+                                                        </div>
+                                                        <span className="text-xs text-slate-500 font-medium">{progress}% Complete</span>
                                                     </div>
-                                                    <span className="text-xs text-slate-500 font-medium">0% Complete</span>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </Link>
-                                ))}
+                                        </Link>
+                                    )
+                                })}
                             </div>
                         ) : (
                             <div className="glass rounded-2xl p-12 text-center border-dashed border-slate-700">
