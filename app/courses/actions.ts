@@ -116,9 +116,64 @@ export async function markLessonComplete(lessonId: string, courseId: string) {
         lesson_id: lessonId,
         is_completed: true,
         completed_at: new Date().toISOString()
+    }, {
+        onConflict: 'user_id, lesson_id'
     })
 
-    if (error) console.error('Progress Error:', error)
+    if (error) {
+        console.error('Progress Error:', error)
+        return
+    }
+
+    // Check for Course Completion
+    // 1. Get all lesson IDs for this course
+    const { data: courseLessons } = await supabase
+        .from('lessons')
+        .select('id, modules!inner(course_id)')
+        .eq('modules.course_id', courseId)
+
+    if (!courseLessons) return
+
+    // 2. Get all completed lesson IDs for this user
+    const { data: completedLessons } = await supabase
+        .from('user_progress')
+        .select('lesson_id')
+        .eq('user_id', user.id)
+        .eq('is_completed', true)
+
+    const completedSet = new Set(completedLessons?.map(c => c.lesson_id))
+
+    // 3. Verify if all course lessons are in the completed set
+    const allCompleted = courseLessons.every(l => completedSet.has(l.id))
+
+    if (allCompleted) {
+        // 4. Check if certificate already exists
+        const { data: existingCert } = await supabase
+            .from('certificates')
+            .select('id')
+            .eq('user_id', user.id)
+            .eq('course_id', courseId)
+            .single()
+
+        if (!existingCert) {
+            // 5. Issue Certificate
+            const certificateCode = `CERT-${Math.random().toString(36).substring(2, 9).toUpperCase()}-${Date.now().toString(36).toUpperCase()}`
+
+            await supabase.from('certificates').insert({
+                user_id: user.id,
+                course_id: courseId,
+                certificate_code: certificateCode
+            })
+
+            // Notify User
+            await createNotification(
+                user.id,
+                'Course Completed! 🎓',
+                'Congratulations! You have completed the course and earned a certificate.',
+                'success'
+            )
+        }
+    }
 
     revalidatePath(`/courses/${courseId}/learn`)
 }

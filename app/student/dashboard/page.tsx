@@ -68,6 +68,14 @@ export default async function StudentDashboard() {
     })
     // END: Progress Calculation Logic
 
+    // Fetch certificates
+    const { data: certificates } = await supabase
+        .from('certificates')
+        .select('id, course_id')
+        .eq('user_id', user.id)
+
+    const certificateMap = new Map(certificates?.map(c => [c.course_id, c.id]))
+
     return (
         <div className="min-h-screen bg-slate-950 p-8">
             <div className="mx-auto max-w-7xl">
@@ -115,24 +123,30 @@ export default async function StudentDashboard() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {enrollments.map((enrollment) => {
                                     const progress = progressMap[enrollment.course_id] || 0
+                                    const certificateId = certificateMap.get(enrollment.course_id)
+                                    const canClaim = progress === 100 && !certificateId
 
                                     return (
-                                        <Link key={enrollment.id} href={`/courses/${enrollment.course_id}/learn`} className="block group h-full">
-                                            <div className="glass h-full rounded-xl p-4 flex flex-col gap-4 transition-all hover:bg-slate-800/60 hover:scale-[1.01] border border-slate-800">
+                                        <div key={enrollment.id} className="block group h-full">
+                                            <div className="glass h-full rounded-xl p-4 flex flex-col gap-4 transition-all hover:bg-slate-800/60 hover:scale-[1.01] border border-slate-800 relative">
                                                 {/* Course Image Placeholder */}
-                                                <div className="h-40 w-full bg-slate-800 rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden border border-slate-700 relative">
-                                                    {enrollment.courses.cover_image ? (
-                                                        // eslint-disable-next-line @next/next/no-img-element
-                                                        <img src={enrollment.courses.cover_image} alt={enrollment.courses.title} className="w-full h-full object-cover" />
-                                                    ) : (
-                                                        <span className="text-4xl font-bold text-slate-600">{enrollment.courses.title[0]}</span>
-                                                    )}
-                                                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
-                                                </div>
+                                                <Link href={`/courses/${enrollment.course_id}/learn`} className="block">
+                                                    <div className="h-40 w-full bg-slate-800 rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden border border-slate-700 relative">
+                                                        {enrollment.courses.cover_image ? (
+                                                            // eslint-disable-next-line @next/next/no-img-element
+                                                            <img src={enrollment.courses.cover_image} alt={enrollment.courses.title} className="w-full h-full object-cover" />
+                                                        ) : (
+                                                            <span className="text-4xl font-bold text-slate-600">{enrollment.courses.title[0]}</span>
+                                                        )}
+                                                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
+                                                    </div>
+                                                </Link>
 
                                                 <div className="flex-1 flex flex-col">
-                                                    <h3 className="font-bold text-lg text-white group-hover:text-indigo-400 transition-colors mb-2">{enrollment.courses.title}</h3>
-                                                    <p className="text-sm text-slate-400 line-clamp-2 mb-4 flex-1">{enrollment.courses.description || 'No description'}</p>
+                                                    <Link href={`/courses/${enrollment.course_id}/learn`} className="block flex-1">
+                                                        <h3 className="font-bold text-lg text-white group-hover:text-indigo-400 transition-colors mb-2">{enrollment.courses.title}</h3>
+                                                        <p className="text-sm text-slate-400 line-clamp-2 mb-4">{enrollment.courses.description || 'No description'}</p>
+                                                    </Link>
 
                                                     {/* Progress Bar */}
                                                     <div className="mt-auto">
@@ -140,16 +154,26 @@ export default async function StudentDashboard() {
                                                             <span>Progress</span>
                                                             <span>{progress}%</span>
                                                         </div>
-                                                        <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                                        <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden mb-2">
                                                             <div
                                                                 className="h-full bg-emerald-500"
                                                                 style={{ width: `${progress}%` }}
                                                             />
                                                         </div>
+
+                                                        {progress === 100 && (
+                                                            <Link
+                                                                href={`/courses/${enrollment.course_id}/certificate`}
+                                                                className="flex items-center justify-center gap-2 w-full py-1.5 mt-2 rounded-lg bg-indigo-600 text-white text-xs font-semibold shadow-lg shadow-indigo-500/25 hover:bg-indigo-500 transition-all hover:scale-[1.02]"
+                                                            >
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
+                                                                View Certificate
+                                                            </Link>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div>
-                                        </Link>
+                                        </div>
                                     )
                                 })}
                             </div>
