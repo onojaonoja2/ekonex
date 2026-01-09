@@ -9,9 +9,10 @@ interface ProfileDropdownProps {
     email: string
     fullName?: string | null
     role?: string
+    avatarUrl?: string | null
 }
 
-export default function ProfileDropdown({ email, fullName, role }: ProfileDropdownProps) {
+export default function ProfileDropdown({ email, fullName, role, avatarUrl }: ProfileDropdownProps) {
     const [isOpen, setIsOpen] = useState(false)
     const router = useRouter()
     const supabase = createClient()
@@ -32,9 +33,16 @@ export default function ProfileDropdown({ email, fullName, role }: ProfileDropdo
                 onClick={toggle}
                 className="flex items-center gap-2 hover:opacity-80 transition-opacity focus:outline-none"
             >
-                <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center text-white text-xs font-bold border border-white/10">
-                    {fullName?.[0]?.toUpperCase() || email[0]?.toUpperCase()}
-                </div>
+                {avatarUrl ? (
+                    <div className="h-8 w-8 rounded-full overflow-hidden border border-white/10 shadow-sm">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={avatarUrl} alt={fullName || 'User'} className="h-full w-full object-cover" />
+                    </div>
+                ) : (
+                    <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center text-white text-xs font-bold border border-white/10">
+                        {fullName?.[0]?.toUpperCase() || email[0]?.toUpperCase()}
+                    </div>
+                )}
                 <div className="hidden md:block text-left">
                     <p className="text-xs font-medium text-white line-clamp-1 max-w-[100px]">{fullName || email}</p>
                     <p className="text-[10px] text-slate-400 capitalize">{role || 'User'}</p>

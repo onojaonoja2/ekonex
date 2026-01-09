@@ -77,7 +77,7 @@ export default async function InstructorDashboard() {
 
                         <div className="glass rounded-2xl p-6 border border-slate-800">
                             <h4 className="font-semibold text-white mb-4">Quick Actions</h4>
-                            <Link href="/instructor/create" className="flex items-center justify-center w-full gap-2 rounded-xl bg-indigo-600 py-3 text-sm font-semibold text-white hover:bg-indigo-500 transition-all shadow-lg shadow-indigo-500/20">
+                            <Link href="/instructor/courses/create" className="flex items-center justify-center w-full gap-2 rounded-xl bg-indigo-600 py-3 text-sm font-semibold text-white hover:bg-indigo-500 transition-all shadow-lg shadow-indigo-500/20">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                                 Create New Course
                             </Link>
@@ -133,9 +133,9 @@ export default async function InstructorDashboard() {
                                     </div>
                                 ))
                             ) : (
-                                <div className="text-center py-12 glass rounded-2xl border-dashed border-slate-800">
+                                <div className="text-center py-12 glass rounded-2xl border border-dashed border-slate-800">
                                     <p className="text-slate-400 mb-4">You haven't created any courses yet.</p>
-                                    <Link href="/instructor/create" className="text-indigo-400 hover:text-indigo-300 font-medium">
+                                    <Link href="/instructor/courses/create" className="text-indigo-400 hover:text-indigo-300 font-medium">
                                         Create your first course &rarr;
                                     </Link>
                                 </div>
@@ -145,5 +145,6 @@ export default async function InstructorDashboard() {
                 </div>
             </div>
         </div>
+
     )
 }

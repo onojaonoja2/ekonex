@@ -85,7 +85,12 @@ export async function signup(formData: FormData) {
     }
 
     revalidatePath('/', 'layout')
-    redirect('/')
+
+    if (role === 'instructor') {
+        redirect('/instructor/dashboard')
+    } else {
+        redirect('/student/dashboard')
+    }
 }
 
 export async function signout() {

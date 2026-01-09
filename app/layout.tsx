@@ -66,6 +66,7 @@ export default async function RootLayout({
                       email={user.email!}
                       fullName={profile?.full_name}
                       role={profile?.role || 'student'}
+                      avatarUrl={profile?.avatar_url}
                     />
                   </>
                 ) : (
