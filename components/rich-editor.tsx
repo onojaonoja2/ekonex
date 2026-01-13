@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import {
     Bold, Italic, List, ListOrdered,
     Heading1, Heading2, Heading3,
-    Palette, Type, Highlighter
+    Palette, Type, Highlighter, AlignJustify
 } from 'lucide-react'
 
 export type ContentBlock = {
@@ -158,6 +158,23 @@ export default function RichEditor({
                                             ))}
                                         </div>
                                     </div>
+                                    <div className="w-px h-4 bg-slate-700 mx-1" />
+                                    <div className="relative group/spacing">
+                                        <button className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded flex items-center gap-1" title="Line Spacing">
+                                            <AlignJustify size={16} />
+                                        </button>
+                                        <div className="absolute top-full left-0 mt-1 p-2 bg-slate-900 border border-slate-800 rounded-lg shadow-xl z-20 hidden group-hover/spacing:flex flex-col gap-1 w-24">
+                                            {[1.0, 1.5, 2.0, 2.5, 3.0].map(spacing => (
+                                                <button
+                                                    key={spacing}
+                                                    onClick={() => insertFormat(block.id, `<div style="line-height: ${spacing}">`, '</div>')}
+                                                    className="px-2 py-1 text-xs text-slate-300 hover:bg-slate-800 rounded text-left"
+                                                >
+                                                    {spacing}x
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
                                 </div>
                                 <textarea
                                     id={`textarea-${block.id}`}
@@ -194,23 +211,43 @@ export default function RichEditor({
                         {(block.type === 'image' || block.type === 'pdf') && (
                             <div className="space-y-2">
                                 {block.content ? (
-                                    <div className="relative rounded-lg overflow-hidden border border-slate-700 bg-slate-950">
-                                        {block.type === 'image' ? (
-                                            // eslint-disable-next-line @next/next/no-img-element
-                                            <img src={block.content} alt="Preview" className="max-h-64 object-contain mx-auto" />
-                                        ) : (
-                                            <div className="p-4 flex items-center justify-center gap-2 text-slate-300">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-                                                PDF Uploaded
+                                    <>
+                                        <div className="relative rounded-lg overflow-hidden border border-slate-700 bg-slate-950">
+                                            {block.type === 'image' ? (
+                                                // eslint-disable-next-line @next/next/no-img-element
+                                                <img src={block.content} alt="Preview" className="max-h-64 object-contain mx-auto" />
+                                            ) : (
+                                                <div className="p-4 flex items-center justify-center gap-2 text-slate-300">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                                                    PDF Uploaded
+                                                </div>
+                                            )}
+                                            <button
+                                                onClick={() => updateBlock(block.id, '')}
+                                                className="absolute top-2 right-2 bg-black/50 text-white p-1 rounded hover:bg-black/70"
+                                            >
+                                                Change
+                                            </button>
+                                        </div>
+                                        {block.type === 'image' && (
+                                            <div className="grid grid-cols-2 gap-4 mt-2">
+                                                <input
+                                                    type="text"
+                                                    placeholder="Image Title"
+                                                    value={block.meta?.title || ''}
+                                                    onChange={(e) => updateBlock(block.id, block.content, { title: e.target.value })}
+                                                    className="bg-slate-950 border border-slate-800 rounded-lg p-2 text-sm text-slate-300 focus:outline-none focus:border-indigo-500"
+                                                />
+                                                <input
+                                                    type="text"
+                                                    placeholder="Footer / Caption"
+                                                    value={block.meta?.footer || ''}
+                                                    onChange={(e) => updateBlock(block.id, block.content, { footer: e.target.value })}
+                                                    className="bg-slate-950 border border-slate-800 rounded-lg p-2 text-sm text-slate-300 focus:outline-none focus:border-indigo-500"
+                                                />
                                             </div>
                                         )}
-                                        <button
-                                            onClick={() => updateBlock(block.id, '')}
-                                            className="absolute top-2 right-2 bg-black/50 text-white p-1 rounded hover:bg-black/70"
-                                        >
-                                            Change
-                                        </button>
-                                    </div>
+                                    </>
                                 ) : (
                                     <div className="border-2 border-dashed border-slate-800 rounded-lg p-8 flex flex-col items-center justify-center hover:border-indigo-500/50 hover:bg-indigo-500/5 transition-all">
                                         <input

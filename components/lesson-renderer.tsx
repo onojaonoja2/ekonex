@@ -23,9 +23,17 @@ export default function LessonRenderer({ blocks }: { blocks: ContentBlock[] }) {
                     )}
 
                     {block.type === 'image' && block.content && (
-                        <div className="rounded-xl overflow-hidden border border-slate-800 bg-black/20">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={block.content} alt="Course Content" className="w-full h-auto max-h-[600px] object-contain" />
+                        <div className="space-y-2">
+                            {block.meta?.title && (
+                                <h4 className="text-lg font-semibold text-slate-200 text-center">{block.meta.title}</h4>
+                            )}
+                            <div className="rounded-xl overflow-hidden border border-slate-800 bg-black/20">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src={block.content} alt={block.meta?.title || "Course Content"} className="w-full h-auto max-h-[600px] object-contain" />
+                            </div>
+                            {block.meta?.footer && (
+                                <p className="text-sm text-slate-400 text-center italic">{block.meta.footer}</p>
+                            )}
                         </div>
                     )}
 
