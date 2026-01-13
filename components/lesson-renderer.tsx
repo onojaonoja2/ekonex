@@ -2,6 +2,7 @@
 
 import { ContentBlock } from '@/components/rich-editor'
 import ReactMarkdown from 'react-markdown'
+import rehypeRaw from 'rehype-raw'
 // Note: For syntax highlighting in code blocks, we might need a library like 'prismjs' or 'shiki'.
 // For now, simple pre/code tags. 
 import { useState } from 'react'
@@ -17,7 +18,7 @@ export default function LessonRenderer({ blocks }: { blocks: ContentBlock[] }) {
                 <div key={block.id}>
                     {block.type === 'text' && (
                         <div className="prose prose-invert prose-lg max-w-none">
-                            <ReactMarkdown>{block.content}</ReactMarkdown>
+                            <ReactMarkdown rehypePlugins={[rehypeRaw]}>{block.content}</ReactMarkdown>
                         </div>
                     )}
 
@@ -125,4 +126,13 @@ function SlideViewer({ content }: { content: string }) {
             </div>
         </div>
     )
+}
+
+function getEmbedUrl(url: string) {
+    if (!url) return ''
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+        const videoId = url.includes('v=') ? url.split('v=')[1].split('&')[0] : url.split('/').pop()
+        return `https://www.youtube.com/embed/${videoId}`
+    }
+    return url
 }

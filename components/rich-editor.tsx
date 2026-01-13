@@ -3,6 +3,11 @@
 import { useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { toast } from 'sonner'
+import {
+    Bold, Italic, List, ListOrdered,
+    Heading1, Heading2, Heading3,
+    Palette, Type, Highlighter
+} from 'lucide-react'
 
 export type ContentBlock = {
     id: string
@@ -68,6 +73,33 @@ export default function RichEditor({
         }
     }
 
+
+    const insertFormat = (blockId: string, startTag: string, endTag: string = '') => {
+        const block = blocks.find(b => b.id === blockId)
+        if (!block) return
+
+        const textarea = document.getElementById(`textarea-${blockId}`) as HTMLTextAreaElement
+        if (!textarea) return
+
+        const start = textarea.selectionStart
+        const end = textarea.selectionEnd
+        const text = block.content
+        const before = text.substring(0, start)
+        const selection = text.substring(start, end)
+        const after = text.substring(end)
+
+        const newContent = `${before}${startTag}${selection}${endTag}${after}`
+        const newCursorPos = start + startTag.length + selection?.length
+
+        updateBlock(blockId, newContent)
+
+        // Defer focus to allow React render
+        setTimeout(() => {
+            textarea.focus()
+            textarea.setSelectionRange(newCursorPos, newCursorPos)
+        }, 0)
+    }
+
     return (
         <div className="space-y-6">
             <div className="space-y-4">
@@ -84,12 +116,57 @@ export default function RichEditor({
                         </div>
 
                         {block.type === 'text' && (
-                            <textarea
-                                value={block.content}
-                                onChange={(e) => updateBlock(block.id, e.target.value)}
-                                className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-slate-300 min-h-[100px] focus:outline-none focus:border-indigo-500"
-                                placeholder="Write markdown text here..."
-                            />
+                            <div className="space-y-2">
+                                <div className="flex flex-wrap gap-1 p-2 bg-slate-900 border border-slate-800 rounded-t-lg items-center">
+                                    <button onClick={() => insertFormat(block.id, '**', '**')} className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded" title="Bold"><Bold size={16} /></button>
+                                    <button onClick={() => insertFormat(block.id, '*', '*')} className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded" title="Italic"><Italic size={16} /></button>
+                                    <div className="w-px h-4 bg-slate-700 mx-1" />
+                                    <button onClick={() => insertFormat(block.id, '# ')} className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded" title="Heading 1"><Heading1 size={16} /></button>
+                                    <button onClick={() => insertFormat(block.id, '## ')} className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded" title="Heading 2"><Heading2 size={16} /></button>
+                                    <button onClick={() => insertFormat(block.id, '### ')} className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded" title="Heading 3"><Heading3 size={16} /></button>
+                                    <div className="w-px h-4 bg-slate-700 mx-1" />
+                                    <button onClick={() => insertFormat(block.id, '- ')} className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded" title="Bulleted List"><List size={16} /></button>
+                                    <button onClick={() => insertFormat(block.id, '1. ')} className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded" title="Numbered List"><ListOrdered size={16} /></button>
+                                    <div className="w-px h-4 bg-slate-700 mx-1" />
+                                    <div className="relative group/color">
+                                        <button className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded flex items-center gap-1" title="Text Color">
+                                            <Palette size={16} />
+                                        </button>
+                                        <div className="absolute top-full left-0 mt-1 p-2 bg-slate-900 border border-slate-800 rounded-lg shadow-xl z-20 hidden group-hover/color:grid grid-cols-5 gap-1 w-32">
+                                            {['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#a855f7', '#ec4899', '#ffffff', '#94a3b8', '#000000'].map(color => (
+                                                <button
+                                                    key={color}
+                                                    onClick={() => insertFormat(block.id, `<span style="color: ${color}">`, '</span>')}
+                                                    className="w-5 h-5 rounded-full border border-slate-700 hover:scale-110 transition-transform"
+                                                    style={{ backgroundColor: color }}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="relative group/bg">
+                                        <button className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded flex items-center gap-1" title="Background Color">
+                                            <Highlighter size={16} />
+                                        </button>
+                                        <div className="absolute top-full left-0 mt-1 p-2 bg-slate-900 border border-slate-800 rounded-lg shadow-xl z-20 hidden group-hover/bg:grid grid-cols-5 gap-1 w-32">
+                                            {['#ef444433', '#f9731633', '#eab30833', '#22c55e33', '#3b82f633', '#a855f733', '#ec489933', '#ffffff33', '#94a3b833', '#00000033'].map(color => (
+                                                <button
+                                                    key={color}
+                                                    onClick={() => insertFormat(block.id, `<span style="background-color: ${color}">`, '</span>')}
+                                                    className="w-5 h-5 rounded-full border border-slate-700 hover:scale-110 transition-transform"
+                                                    style={{ backgroundColor: color }}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                <textarea
+                                    id={`textarea-${block.id}`}
+                                    value={block.content}
+                                    onChange={(e) => updateBlock(block.id, e.target.value)}
+                                    className="w-full bg-slate-950 border border-t-0 border-slate-800 rounded-b-lg p-3 text-slate-300 min-h-[150px] focus:outline-none focus:border-indigo-500 font-mono text-sm leading-relaxed"
+                                    placeholder="Write content here..."
+                                />
+                            </div>
                         )}
 
                         {block.type === 'code' && (
