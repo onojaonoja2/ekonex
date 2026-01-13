@@ -13,7 +13,7 @@ export default async function CoursesLayout({
     return (
         <div className="min-h-screen bg-slate-950 flex flex-col">
             <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-slate-950/80 backdrop-blur supports-[backdrop-filter]:bg-slate-950/60">
-                <div className="container flex h-14 items-center">
+                <div className="container mx-auto px-4 flex h-14 items-center">
                     <div className="mr-4 hidden md:flex">
                         <Link href="/courses" className="mr-6 flex items-center space-x-2">
                             <span className="hidden font-bold sm:inline-block text-white">
