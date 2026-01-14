@@ -22,12 +22,27 @@ export default async function LearnLayout({
     // Fetch course details
     const { data: course } = await supabase
         .from('courses')
-        .select('title, id')
+        .select('title, id, instructor_id')
         .eq('id', id)
         .single()
 
     if (!course) {
         return <div>Course not found</div>
+    }
+
+    // Check if user is enrolled
+    const { data: enrollment } = await supabase
+        .from('enrollments')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('course_id', id)
+        .single()
+
+    const isInstructor = course.instructor_id === user.id
+    const isEnrolled = !!enrollment
+
+    if (!isInstructor && !isEnrolled) {
+        redirect(`/courses/${id}`)
     }
 
     // Fetch modules and lessons

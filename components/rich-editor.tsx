@@ -3,6 +3,11 @@
 import { useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { toast } from 'sonner'
+import {
+    Bold, Italic, List, ListOrdered,
+    Heading1, Heading2, Heading3,
+    Palette, Type, Highlighter, AlignJustify
+} from 'lucide-react'
 
 export type ContentBlock = {
     id: string
@@ -68,6 +73,33 @@ export default function RichEditor({
         }
     }
 
+
+    const insertFormat = (blockId: string, startTag: string, endTag: string = '') => {
+        const block = blocks.find(b => b.id === blockId)
+        if (!block) return
+
+        const textarea = document.getElementById(`textarea-${blockId}`) as HTMLTextAreaElement
+        if (!textarea) return
+
+        const start = textarea.selectionStart
+        const end = textarea.selectionEnd
+        const text = block.content
+        const before = text.substring(0, start)
+        const selection = text.substring(start, end)
+        const after = text.substring(end)
+
+        const newContent = `${before}${startTag}${selection}${endTag}${after}`
+        const newCursorPos = start + startTag.length + selection?.length
+
+        updateBlock(blockId, newContent)
+
+        // Defer focus to allow React render
+        setTimeout(() => {
+            textarea.focus()
+            textarea.setSelectionRange(newCursorPos, newCursorPos)
+        }, 0)
+    }
+
     return (
         <div className="space-y-6">
             <div className="space-y-4">
@@ -84,12 +116,74 @@ export default function RichEditor({
                         </div>
 
                         {block.type === 'text' && (
-                            <textarea
-                                value={block.content}
-                                onChange={(e) => updateBlock(block.id, e.target.value)}
-                                className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-slate-300 min-h-[100px] focus:outline-none focus:border-indigo-500"
-                                placeholder="Write markdown text here..."
-                            />
+                            <div className="space-y-2">
+                                <div className="flex flex-wrap gap-1 p-2 bg-slate-900 border border-slate-800 rounded-t-lg items-center">
+                                    <button onClick={() => insertFormat(block.id, '**', '**')} className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded" title="Bold"><Bold size={16} /></button>
+                                    <button onClick={() => insertFormat(block.id, '*', '*')} className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded" title="Italic"><Italic size={16} /></button>
+                                    <div className="w-px h-4 bg-slate-700 mx-1" />
+                                    <button onClick={() => insertFormat(block.id, '# ')} className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded" title="Heading 1"><Heading1 size={16} /></button>
+                                    <button onClick={() => insertFormat(block.id, '## ')} className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded" title="Heading 2"><Heading2 size={16} /></button>
+                                    <button onClick={() => insertFormat(block.id, '### ')} className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded" title="Heading 3"><Heading3 size={16} /></button>
+                                    <div className="w-px h-4 bg-slate-700 mx-1" />
+                                    <button onClick={() => insertFormat(block.id, '- ')} className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded" title="Bulleted List"><List size={16} /></button>
+                                    <button onClick={() => insertFormat(block.id, '1. ')} className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded" title="Numbered List"><ListOrdered size={16} /></button>
+                                    <div className="w-px h-4 bg-slate-700 mx-1" />
+                                    <div className="relative group/color">
+                                        <button className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded flex items-center gap-1" title="Text Color">
+                                            <Palette size={16} />
+                                        </button>
+                                        <div className="absolute top-full left-0 mt-1 p-2 bg-slate-900 border border-slate-800 rounded-lg shadow-xl z-20 hidden group-hover/color:grid grid-cols-5 gap-1 w-32">
+                                            {['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#a855f7', '#ec4899', '#ffffff', '#94a3b8', '#000000'].map(color => (
+                                                <button
+                                                    key={color}
+                                                    onClick={() => insertFormat(block.id, `<span style="color: ${color}">`, '</span>')}
+                                                    className="w-5 h-5 rounded-full border border-slate-700 hover:scale-110 transition-transform"
+                                                    style={{ backgroundColor: color }}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="relative group/bg">
+                                        <button className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded flex items-center gap-1" title="Background Color">
+                                            <Highlighter size={16} />
+                                        </button>
+                                        <div className="absolute top-full left-0 mt-1 p-2 bg-slate-900 border border-slate-800 rounded-lg shadow-xl z-20 hidden group-hover/bg:grid grid-cols-5 gap-1 w-32">
+                                            {['#ef444433', '#f9731633', '#eab30833', '#22c55e33', '#3b82f633', '#a855f733', '#ec489933', '#ffffff33', '#94a3b833', '#00000033'].map(color => (
+                                                <button
+                                                    key={color}
+                                                    onClick={() => insertFormat(block.id, `<span style="background-color: ${color}">`, '</span>')}
+                                                    className="w-5 h-5 rounded-full border border-slate-700 hover:scale-110 transition-transform"
+                                                    style={{ backgroundColor: color }}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="w-px h-4 bg-slate-700 mx-1" />
+                                    <div className="relative group/spacing">
+                                        <button className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded flex items-center gap-1" title="Line Spacing">
+                                            <AlignJustify size={16} />
+                                        </button>
+                                        <div className="absolute top-full left-0 mt-1 p-2 bg-slate-900 border border-slate-800 rounded-lg shadow-xl z-20 hidden group-hover/spacing:flex flex-col gap-1 w-24">
+                                            {[1.0, 1.5, 2.0, 2.5, 3.0].map(spacing => (
+                                                <button
+                                                    key={spacing}
+                                                    onClick={() => insertFormat(block.id, `<div style="line-height: ${spacing}">`, '</div>')}
+                                                    className="px-2 py-1 text-xs text-slate-300 hover:bg-slate-800 rounded text-left"
+                                                >
+                                                    {spacing}x
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                <textarea
+                                    id={`textarea-${block.id}`}
+                                    value={block.content}
+                                    onChange={(e) => updateBlock(block.id, e.target.value)}
+                                    className="w-full bg-slate-950 border border-t-0 border-slate-800 rounded-b-lg p-3 text-slate-300 min-h-[150px] focus:outline-none focus:border-indigo-500 font-mono text-sm leading-relaxed"
+                                    placeholder="Write content here..."
+                                />
+                            </div>
                         )}
 
                         {block.type === 'code' && (
@@ -117,23 +211,43 @@ export default function RichEditor({
                         {(block.type === 'image' || block.type === 'pdf') && (
                             <div className="space-y-2">
                                 {block.content ? (
-                                    <div className="relative rounded-lg overflow-hidden border border-slate-700 bg-slate-950">
-                                        {block.type === 'image' ? (
-                                            // eslint-disable-next-line @next/next/no-img-element
-                                            <img src={block.content} alt="Preview" className="max-h-64 object-contain mx-auto" />
-                                        ) : (
-                                            <div className="p-4 flex items-center justify-center gap-2 text-slate-300">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-                                                PDF Uploaded
+                                    <>
+                                        <div className="relative rounded-lg overflow-hidden border border-slate-700 bg-slate-950">
+                                            {block.type === 'image' ? (
+                                                // eslint-disable-next-line @next/next/no-img-element
+                                                <img src={block.content} alt="Preview" className="max-h-64 object-contain mx-auto" />
+                                            ) : (
+                                                <div className="p-4 flex items-center justify-center gap-2 text-slate-300">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                                                    PDF Uploaded
+                                                </div>
+                                            )}
+                                            <button
+                                                onClick={() => updateBlock(block.id, '')}
+                                                className="absolute top-2 right-2 bg-black/50 text-white p-1 rounded hover:bg-black/70"
+                                            >
+                                                Change
+                                            </button>
+                                        </div>
+                                        {block.type === 'image' && (
+                                            <div className="grid grid-cols-2 gap-4 mt-2">
+                                                <input
+                                                    type="text"
+                                                    placeholder="Image Title"
+                                                    value={block.meta?.title || ''}
+                                                    onChange={(e) => updateBlock(block.id, block.content, { title: e.target.value })}
+                                                    className="bg-slate-950 border border-slate-800 rounded-lg p-2 text-sm text-slate-300 focus:outline-none focus:border-indigo-500"
+                                                />
+                                                <input
+                                                    type="text"
+                                                    placeholder="Footer / Caption"
+                                                    value={block.meta?.footer || ''}
+                                                    onChange={(e) => updateBlock(block.id, block.content, { footer: e.target.value })}
+                                                    className="bg-slate-950 border border-slate-800 rounded-lg p-2 text-sm text-slate-300 focus:outline-none focus:border-indigo-500"
+                                                />
                                             </div>
                                         )}
-                                        <button
-                                            onClick={() => updateBlock(block.id, '')}
-                                            className="absolute top-2 right-2 bg-black/50 text-white p-1 rounded hover:bg-black/70"
-                                        >
-                                            Change
-                                        </button>
-                                    </div>
+                                    </>
                                 ) : (
                                     <div className="border-2 border-dashed border-slate-800 rounded-lg p-8 flex flex-col items-center justify-center hover:border-indigo-500/50 hover:bg-indigo-500/5 transition-all">
                                         <input

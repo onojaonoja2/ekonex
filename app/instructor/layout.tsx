@@ -13,7 +13,7 @@ export default async function InstructorLayout({
     return (
         <div className="min-h-screen bg-slate-950 flex flex-col">
             <header className="sticky top-0 z-50 w-full border-b border-indigo-500/10 bg-slate-950/80 backdrop-blur supports-[backdrop-filter]:bg-slate-950/60">
-                <div className="container flex h-14 items-center">
+                <div className="container mx-auto px-4 flex h-14 items-center">
                     <div className="mr-4 hidden md:flex">
                         <Link href="/instructor/courses" className="mr-6 flex items-center space-x-2">
                             <span className="font-bold text-indigo-400">

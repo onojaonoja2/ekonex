@@ -1,5 +1,6 @@
 
-import { login, signup } from '../auth/actions'
+import { login } from '../auth/actions'
+import Link from 'next/link'
 
 export default async function LoginPage({
     searchParams,
@@ -13,9 +14,11 @@ export default async function LoginPage({
         <div className="flex min-h-screen flex-col items-center justify-center p-4">
             <div className="glass w-full max-w-md rounded-2xl p-8 shadow-2xl transition-all duration-300 hover:shadow-indigo-500/10">
                 <div className="mb-8 text-center">
-                    <h1 className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-4xl font-bold text-transparent font-display">
-                        Ekonex
-                    </h1>
+                    <Link href="/" className="inline-block hover:opacity-80 transition-opacity">
+                        <h1 className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-4xl font-bold text-transparent font-display">
+                            Ekonex
+                        </h1>
+                    </Link>
                     <p className="mt-2 text-sm text-slate-400">
                         Welcome back to your learning journey
                     </p>
@@ -63,12 +66,12 @@ export default async function LoginPage({
                         >
                             Log In
                         </button>
-                        <button
-                            formAction={signup}
-                            className="w-full rounded-xl bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-300 transition-all hover:bg-slate-700 hover:text-white active:scale-95"
+                        <Link
+                            href="/register"
+                            className="block w-full text-center rounded-xl bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-300 transition-all hover:bg-slate-700 hover:text-white active:scale-95"
                         >
-                            Sign Up
-                        </button>
+                            Register
+                        </Link>
                     </div>
 
                     {message && (
