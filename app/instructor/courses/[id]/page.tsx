@@ -36,20 +36,28 @@ export default async function InstructorCourseDashboard({ params }: { params: Pr
         .order('position', { ascending: true })
 
     // Fetch enrollments
-    const { data: rawEnrollments } = await supabase
+    const { data: rawEnrollments, error: enrollmentsError } = await supabase
         .from('enrollments')
         .select('user_id, enrolled_at')
         .eq('course_id', id)
         .order('enrolled_at', { ascending: false })
 
+    if (enrollmentsError) {
+        console.error('Error fetching enrollments:', enrollmentsError)
+    }
+
     const enrollments = rawEnrollments || []
     const userIds = enrollments.map((e: any) => e.user_id)
 
     // Fetch profiles separately
-    const { data: profiles } = await supabase
+    const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
         .select('id, full_name, email')
         .in('id', userIds)
+
+    if (profilesError) {
+        console.error('Error fetching profiles:', JSON.stringify(profilesError, null, 2))
+    }
 
     const profilesMap = new Map(profiles?.map((p: any) => [p.id, p]))
 
@@ -58,10 +66,14 @@ export default async function InstructorCourseDashboard({ params }: { params: Pr
     const totalLessons = allLessonIds.length
 
     // Fetch progress for all enrolled users for this course
-    const { data: allProgress } = await supabase
+    const { data: allProgress, error: progressError } = await supabase
         .from('user_progress')
-        .select('user_id, lesson_id, updated_at, is_completed')
+        .select('user_id, lesson_id, completed_at, is_completed') // Changed updated_at to completed_at
         .in('lesson_id', allLessonIds)
+
+    if (progressError) {
+        console.error('Error fetching progress:', progressError)
+    }
 
     const studentAnalytics = enrollments.map((enrollment: any) => {
         const profile = profilesMap.get(enrollment.user_id)
@@ -72,8 +84,10 @@ export default async function InstructorCourseDashboard({ params }: { params: Pr
         // Find last activity
         const lastActive = studentProgress.length > 0
             ? studentProgress.reduce((latest, current) => {
-                return new Date(current.updated_at) > new Date(latest) ? current.updated_at : latest
-            }, studentProgress[0].updated_at)
+                const latestDate = new Date(latest)
+                const currentDate = new Date(current.completed_at)
+                return currentDate > latestDate ? current.completed_at : latest
+            }, studentProgress[0].completed_at)
             : null
 
         return {
