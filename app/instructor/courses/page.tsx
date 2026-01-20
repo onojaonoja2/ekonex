@@ -39,7 +39,11 @@ export default async function InstructorCoursesPage() {
                                 <div className="h-full rounded-2xl glass p-6 transition-all duration-300 hover:bg-slate-800/50 hover:border-indigo-500/30">
                                     <div className={`h-40 w-full rounded-xl mb-4 bg-gradient-to-tr ${course.is_published ? 'from-emerald-500/20 to-teal-500/20 border-emerald-500/20' : 'from-indigo-500/20 to-purple-500/20 border-indigo-500/20'} border flex items-center justify-center`}>
                                         {course.cover_image ? (
-                                            <p>Image</p> // Placeholder for image
+                                            <img
+                                                src={course.cover_image}
+                                                alt={course.title}
+                                                className="h-full w-full object-cover rounded-xl"
+                                            />
                                         ) : (
                                             <span className="text-2xl font-bold text-white/20">{course.title[0]}</span>
                                         )}
