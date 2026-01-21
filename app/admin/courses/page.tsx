@@ -1,5 +1,5 @@
 import { createClient } from '@/utils/supabase/server'
-import { BookOpen, User, DollarSign } from 'lucide-react'
+import { BookOpen, User } from 'lucide-react'
 import CourseActions from './course-actions'
 
 export default async function AdminCoursesPage() {
@@ -57,7 +57,7 @@ export default async function AdminCoursesPage() {
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="flex items-center gap-1 text-slate-300">
-                                        <DollarSign size={14} />
+                                        <span className="text-sm font-bold">₦</span>
                                         {course.price > 0 ? course.price : 'Free'}
                                     </div>
                                 </td>

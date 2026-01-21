@@ -42,7 +42,7 @@ export default async function AdminDashboardPage() {
                 {/* Placeholder for Revenue or other metrics */}
                 <div className="glass p-6 rounded-2xl border border-slate-800 opacity-50">
                     <h3 className="text-slate-400 text-sm font-medium mb-2">Platform Revenue</h3>
-                    <p className="text-4xl font-bold text-white">$0</p>
+                    <p className="text-4xl font-bold text-white">₦0</p>
                 </div>
             </div>
 
