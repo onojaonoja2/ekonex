@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { LayoutDashboard, Users, Building2, Settings, LogOut } from 'lucide-react'
+import { LayoutDashboard, Users, Building2, Settings, LogOut, Shield } from 'lucide-react'
 import { signout } from '../auth/actions'
 
 export default async function AdminLayout({
@@ -24,16 +24,19 @@ export default async function AdminLayout({
         .eq('id', user.id)
         .single()
 
-    if (!profile || (profile.role !== 'system_admin' && profile.role !== 'org_admin')) {
+    if (!profile || (profile.role !== 'system_admin' && profile.role !== 'org_admin' && profile.role !== 'sub_admin')) {
         redirect('/') // Unauthorized
     }
 
     const navItems = [
         { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
         { label: 'Users', href: '/admin/users', icon: Users },
-        { label: 'Organizations', href: '/admin/organizations', icon: Building2 },
-        // { label: 'Settings', href: '/admin/settings', icon: Settings },
+        { label: 'Courses', href: '/admin/courses', icon: Building2 }, // Reusing icon for now
     ]
+
+    if (profile.role === 'system_admin') {
+        navItems.push({ label: 'Admins', href: '/admin/admins', icon: Shield })
+    }
 
     return (
         <div className="flex min-h-screen bg-slate-950 text-slate-200">

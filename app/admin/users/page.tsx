@@ -1,6 +1,9 @@
 import { createClient } from '@/utils/supabase/server'
 import { MoreHorizontal, User, Shield, Building } from 'lucide-react'
 
+import CreateUserForm from './create-user-form'
+import UserActions from './user-actions'
+
 export default async function AdminUsersPage() {
     const supabase = await createClient()
 
@@ -16,9 +19,7 @@ export default async function AdminUsersPage() {
         <div>
             <div className="flex items-center justify-between mb-8">
                 <h1 className="text-3xl font-bold text-white">User Management</h1>
-                <button className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg font-medium transition-colors">
-                    Add User
-                </button>
+                <CreateUserForm />
             </div>
 
             <div className="glass rounded-2xl overflow-hidden border border-slate-800">
@@ -27,6 +28,7 @@ export default async function AdminUsersPage() {
                         <tr>
                             <th className="px-6 py-4">User</th>
                             <th className="px-6 py-4">Role</th>
+                            <th className="px-6 py-4">Status</th>
                             <th className="px-6 py-4">Organization</th>
                             <th className="px-6 py-4 text-right">Actions</th>
                         </tr>
@@ -52,11 +54,18 @@ export default async function AdminUsersPage() {
                                 </td>
                                 <td className="px-6 py-4">
                                     <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border ${user.role === 'system_admin' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' :
-                                            user.role === 'instructor' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
+                                        user.role === 'instructor' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
+                                            user.role === 'sub_admin' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
                                                 'bg-slate-800 text-slate-400 border-slate-700'
                                         }`}>
                                         {user.role === 'system_admin' && <Shield size={12} />}
                                         {user.role}
+                                    </span>
+                                </td>
+                                <td className="px-6 py-4">
+                                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border ${user.status === 'suspended' ? 'bg-red-500/10 text-red-400 border-red-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                                        }`}>
+                                        {user.status || 'Active'}
                                     </span>
                                 </td>
                                 <td className="px-6 py-4">
@@ -70,9 +79,7 @@ export default async function AdminUsersPage() {
                                     )}
                                 </td>
                                 <td className="px-6 py-4 text-right">
-                                    <button className="text-slate-500 hover:text-white transition-colors">
-                                        <MoreHorizontal size={20} />
-                                    </button>
+                                    <UserActions user={user} />
                                 </td>
                             </tr>
                         ))}
@@ -85,3 +92,4 @@ export default async function AdminUsersPage() {
         </div>
     )
 }
+
