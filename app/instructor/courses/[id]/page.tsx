@@ -152,7 +152,7 @@ export default async function InstructorCourseDashboard({ params }: { params: Pr
 
                                 <div>
                                     <label className="text-xs font-semibold text-slate-500 uppercase">Price</label>
-                                    <p className="text-slate-300 font-medium">{course.price > 0 ? `$${course.price}` : 'Free'}</p>
+                                    <p className="text-slate-300 font-medium">{course.price > 0 ? `₦${course.price}` : 'Free'}</p>
                                 </div>
                                 <div>
                                     <label className="text-xs font-semibold text-slate-500 uppercase">Description</label>

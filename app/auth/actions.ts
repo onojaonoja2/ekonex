@@ -34,6 +34,8 @@ export async function login(formData: FormData) {
 
         if (profile?.role === 'instructor') {
             redirect('/instructor/dashboard')
+        } else if (profile?.role === 'system_admin' || profile?.role === 'sub_admin') {
+            redirect('/admin')
         } else {
             redirect('/student/dashboard')
         }
@@ -88,6 +90,8 @@ export async function signup(formData: FormData) {
 
     if (role === 'instructor') {
         redirect('/instructor/dashboard')
+    } else if (role === 'system_admin' || role === 'sub_admin') {
+        redirect('/admin')
     } else {
         redirect('/student/dashboard')
     }

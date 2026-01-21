@@ -46,7 +46,7 @@ export function CourseCard({ course }: CourseCardProps) {
                 <div className="p-6">
                     <div className="flex items-center justify-between mb-3">
                         <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest bg-indigo-500/10 px-2 py-1 rounded-full border border-indigo-500/20">Course</span>
-                        <span className="font-bold text-emerald-400 font-display">{course.price > 0 ? `$${course.price}` : 'Free'}</span>
+                        <span className="font-bold text-emerald-400 font-display">{course.price > 0 ? `₦${course.price}` : 'Free'}</span>
                     </div>
 
                     <h3 className="text-xl font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors line-clamp-1">{course.title}</h3>

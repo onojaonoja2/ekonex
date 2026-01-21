@@ -16,6 +16,13 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
         .eq('id', id)
         .single()
 
+    const { data: modules } = await supabase
+        .from('modules')
+        .select('*')
+        .eq('course_id', id)
+        .order('created_at', { ascending: true }) // Assuming created_at for order if sort_order doesn't exist yet
+        .limit(3)
+
     if (!course) {
         return <div className="p-20 text-center text-white">Course not found</div>
     }
@@ -65,8 +72,8 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                     <div className="col-span-1">
                         <div className="glass rounded-2xl p-8 sticky top-8">
                             <div className="mb-6">
-                                <span className="text-3xl font-bold text-white">{course.price > 0 ? `$${course.price}` : 'Free'}</span>
-                                {course.price > 0 && <span className="text-slate-500 text-sm ml-2 line-through">$99.99</span>}
+                                <span className="text-3xl font-bold text-white">{course.price > 0 ? `₦${course.price}` : 'Free'}</span>
+                                {course.price > 0 && <span className="text-slate-500 text-sm ml-2 line-through">₦99.99</span>}
                             </div>
 
 
@@ -88,7 +95,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                                         price={course.price}
                                         enrollAction={enrollAction}
                                     />
-                                    <p className="mt-4 text-xs text-center text-slate-500">30-day money-back guarantee • Lifetime access</p>
+                                    <p className="mt-4 text-xs text-center text-slate-500">Lifetime access</p>
                                     {!user && (
                                         <p className="mt-3 text-xs text-center text-slate-500">
                                             Already have an account? <Link href="/login" className="text-indigo-400 hover:underline">Log in</Link>
@@ -105,17 +112,21 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
             <div className="max-w-7xl mx-auto px-8 mt-16">
                 <h2 className="text-2xl font-bold text-white mb-6">Course Content</h2>
                 <div className="rounded-2xl border border-slate-800 bg-slate-900/50 overflow-hidden divide-y divide-slate-800">
-                    {[1, 2, 3].map((item) => (
-                        <div key={item} className="p-4 flex items-center justify-between hover:bg-slate-800/50 transition-colors">
-                            <div className="flex items-center gap-4">
-                                <div className="h-8 w-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 text-sm">
-                                    {item}
+                    {modules && modules.length > 0 ? (
+                        modules.map((module, index) => (
+                            <div key={module.id} className="p-4 flex items-center justify-between hover:bg-slate-800/50 transition-colors">
+                                <div className="flex items-center gap-4">
+                                    <div className="h-8 w-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 text-sm shrink-0">
+                                        {index + 1}
+                                    </div>
+                                    <span className="text-slate-300 font-medium">{module.title}</span>
                                 </div>
-                                <span className="text-slate-300 font-medium">Module {item}: Introduction to Topic</span>
+                                {/* <span className="text-xs text-slate-500">Video</span> */}
                             </div>
-                            <span className="text-xs text-slate-500">12:34</span>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        <div className="p-8 text-center text-slate-500">No content available yet.</div>
+                    )}
                 </div>
             </div>
         </div>
