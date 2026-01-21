@@ -7,13 +7,17 @@ import UserActions from './user-actions'
 export default async function AdminUsersPage() {
     const supabase = await createClient()
 
-    const { data: users } = await supabase
+    const { data: users, error } = await supabase
         .from('profiles')
         .select(`
             *,
             organizations (name)
         `)
         .order('created_at', { ascending: false })
+
+    if (error) {
+        console.error('Error fetching users:', error)
+    }
 
     return (
         <div>
