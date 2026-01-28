@@ -124,7 +124,7 @@ export default async function CourseDetailsPage({
                                     <p className="mt-4 text-xs text-center text-slate-500">Lifetime access</p>
                                     {!user && (
                                         <p className="mt-3 text-xs text-center text-slate-500">
-                                            Already have an account? <Link href="/login" className="text-indigo-400 hover:underline">Log in</Link>
+                                            Already have an account? <Link href={`/login?next=/courses/${id}`} className="text-indigo-400 hover:underline">Log in</Link>
                                         </p>
                                     )}
                                 </div>

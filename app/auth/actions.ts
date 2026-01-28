@@ -9,6 +9,7 @@ export async function login(formData: FormData) {
 
     const email = formData.get('email') as string
     const password = formData.get('password') as string
+    const redirectUrl = formData.get('redirectUrl') as string
 
     const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -30,7 +31,14 @@ export async function login(formData: FormData) {
             .eq('id', user.id)
             .single()
 
+            .single()
+
         revalidatePath('/', 'layout')
+
+        if (redirectUrl && redirectUrl.startsWith('/')) {
+            revalidatePath(redirectUrl)
+            redirect(redirectUrl)
+        }
 
         if (profile?.role === 'instructor') {
             redirect('/instructor/dashboard')

@@ -45,6 +45,8 @@ export default function AuthModal({ isOpen, onClose, courseId }: AuthModalProps)
 
                     if (profile?.role === 'instructor') {
                         router.push('/instructor/dashboard')
+                    } else if (courseId) {
+                        router.push(`/courses/${courseId}`)
                     } else {
                         router.push('/student/dashboard')
                     }
@@ -63,6 +65,11 @@ export default function AuthModal({ isOpen, onClose, courseId }: AuthModalProps)
 
                 if (data.session) {
                     toast.success('Account created and logged in!')
+                    if (courseId) {
+                        router.push(`/courses/${courseId}`)
+                    } else {
+                        router.refresh() // Or dashboard
+                    }
                 } else if (data.user && !data.session) {
                     toast.success('Registration successful! Please check your email to confirm.')
                     console.log('Signup successful, identifying email confirmation needed.', data)
