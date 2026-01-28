@@ -3,12 +3,30 @@ import { enrollInCourse } from '../actions'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import EnrollButton from './enroll-button'
+import PayButton from '@/components/pay-button'
+import { verifyPaymentAndEnroll } from '@/app/actions/payment'
 
-export default async function CourseDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
+
+export default async function CourseDetailsPage({
+    params,
+    searchParams
+}: {
+    params: Promise<{ id: string }>
+    searchParams: SearchParams
+}) {
     const supabase = await createClient()
 
     // Unwrap params object before using it (Next.js 15+ requirement)
     const { id } = await params
+    const { payment, reference } = await searchParams
+
+    // Handle payment verification
+    if (payment === 'success' && typeof reference === 'string') {
+        await verifyPaymentAndEnroll(reference, id, false)
+        // Clean URL but we can't do that easily in RSC without client redirect or just rendering success state
+        // We'll proceed to render, assuming verifyPaymentAndEnroll handles enrollment
+    }
 
     const { data: course } = await supabase
         .from('courses')
@@ -76,8 +94,6 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                                 {course.price > 0 && <span className="text-slate-500 text-sm ml-2 line-through">₦99.99</span>}
                             </div>
 
-
-
                             {isEnrolled ? (
                                 <div className="flex flex-col gap-4">
                                     <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/20 p-4 text-center">
@@ -89,12 +105,22 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                                 </div>
                             ) : (
                                 <div>
-                                    <EnrollButton
-                                        courseId={course.id}
-                                        isLoggedIn={!!user}
-                                        price={course.price}
-                                        enrollAction={enrollAction}
-                                    />
+                                    {course.price > 0 ? (
+                                        <div className="flex flex-col gap-4">
+                                            <PayButton
+                                                courseId={course.id}
+                                                price={course.price}
+                                                isLoggedIn={!!user}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <EnrollButton
+                                            courseId={course.id}
+                                            isLoggedIn={!!user}
+                                            price={course.price}
+                                            enrollAction={enrollAction}
+                                        />
+                                    )}
                                     <p className="mt-4 text-xs text-center text-slate-500">Lifetime access</p>
                                     {!user && (
                                         <p className="mt-3 text-xs text-center text-slate-500">
