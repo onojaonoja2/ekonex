@@ -5,10 +5,10 @@ import Link from 'next/link'
 export default async function LoginPage({
     searchParams,
 }: {
-    searchParams: Promise<{ message?: string }>
+    searchParams: Promise<{ message?: string, next?: string }>
 }) {
     // Next.js 15+ searchParams is a Promise
-    const { message } = await searchParams
+    const { message, next } = await searchParams
 
     return (
         <div className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -25,6 +25,7 @@ export default async function LoginPage({
                 </div>
 
                 <form className="flex flex-col gap-4">
+                    {next && <input type="hidden" name="redirectUrl" value={next} />}
                     <div className="group relative">
                         <input
                             className="peer w-full rounded-xl bg-slate-900/50 border border-slate-700 px-4 py-3 text-sm text-slate-200 placeholder-transparent outline-none transition-all focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
@@ -67,7 +68,7 @@ export default async function LoginPage({
                             Log In
                         </button>
                         <Link
-                            href="/register"
+                            href={next ? `/register?next=${encodeURIComponent(next)}` : '/register'}
                             className="block w-full text-center rounded-xl bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-300 transition-all hover:bg-slate-700 hover:text-white active:scale-95"
                         >
                             Register

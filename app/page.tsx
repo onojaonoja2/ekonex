@@ -80,7 +80,7 @@ export default async function Home() {
       </div>
 
       <footer className="mt-auto py-12 text-center border-t border-slate-800/50 w-full">
-        <p className="text-xs text-slate-600 mb-2">© 2024 Ekonex. All rights reserved.</p>
+        <p className="text-xs text-slate-600 mb-2">© 2026 Ekonex. All rights reserved.</p>
         <p className="text-[10px] text-slate-700 font-mono tracking-widest uppercase opacity-50">Next level in digital education</p>
       </footer>
     </main>

@@ -24,6 +24,22 @@ export async function enrollInCourse(courseId: string, formData: FormData) {
         redirect(`/courses/${courseId}?message=Already enrolled`)
     }
 
+    // Verify course is free
+    const { data: course } = await supabase
+        .from('courses')
+        .select('price')
+        .eq('id', courseId)
+        .single()
+
+    if (course && course.price > 0) {
+        // Double check if purchase exists (though UI shouldn't allow this)
+        // For MVP, we Strict check: if price > 0, you must use the payment flow.
+        // The payment flow inserts into 'enrollments' via webhook or success page.
+        // Actually, the plan said: "Update enrollInCourse to ensure paid courses cannot be enrolled in for free"
+        // So we strictly block here.
+        redirect(`/courses/${courseId}?error=Payment required for this course`)
+    }
+
     // Create enrollment
     const { error } = await supabase.from('enrollments').insert({
         user_id: user.id,
