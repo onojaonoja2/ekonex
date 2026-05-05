@@ -31,8 +31,6 @@ export async function login(formData: FormData) {
             .eq('id', user.id)
             .single()
 
-            .single()
-
         revalidatePath('/', 'layout')
 
         if (redirectUrl && redirectUrl.startsWith('/')) {
