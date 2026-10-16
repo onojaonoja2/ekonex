@@ -28,8 +28,8 @@ export function CourseCard({ course }: CourseCardProps) {
 
     return (
         <Link href={`/courses/${course.id}`} className="group block h-full">
-            <div className="h-full rounded-2xl glass p-0 overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-indigo-500/10 bg-slate-900/50 border border-slate-800">
-                <div className={`h-48 w-full bg-gradient-to-tr ${course.cover_image ? '' : 'from-indigo-600 to-violet-600'} flex items-center justify-center relative overflow-hidden`}>
+            <div className="h-full rounded-2xl glass p-0 overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-emerald-500/10 bg-slate-900/50 border border-slate-800">
+                <div className={`h-48 w-full bg-gradient-to-tr ${course.cover_image ? '' : 'from-emerald-600 to-teal-600'} flex items-center justify-center relative overflow-hidden`}>
                     {course.cover_image ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
@@ -45,11 +45,11 @@ export function CourseCard({ course }: CourseCardProps) {
 
                 <div className="p-6">
                     <div className="flex items-center justify-between mb-3">
-                        <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest bg-indigo-500/10 px-2 py-1 rounded-full border border-indigo-500/20">Course</span>
+                        <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest bg-emerald-500/10 px-2 py-1 rounded-full border border-emerald-500/20">Course</span>
                         <span className="font-bold text-emerald-400 font-display">{course.price > 0 ? `₦${course.price}` : 'Free'}</span>
                     </div>
 
-                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors line-clamp-1">{course.title}</h3>
+                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-emerald-400 transition-colors line-clamp-1">{course.title}</h3>
                     <p className="text-sm text-slate-400 line-clamp-2 mb-4 h-10">{course.description || 'No description available.'}</p>
 
                     <div className="flex items-center gap-2 pt-4 border-t border-white/5">

@@ -26,7 +26,7 @@ export default async function InstructorCoursesPage() {
                     </div>
                     <Link
                         href="/instructor/courses/create"
-                        className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition-all hover:bg-indigo-500"
+                        className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-500"
                     >
                         + New Course
                     </Link>
@@ -36,8 +36,8 @@ export default async function InstructorCoursesPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {courses.map((course) => (
                             <Link key={course.id} href={`/instructor/courses/${course.id}`} className="group relative block h-full">
-                                <div className="h-full rounded-2xl glass p-6 transition-all duration-300 hover:bg-slate-800/50 hover:border-indigo-500/30">
-                                    <div className={`h-40 w-full rounded-xl mb-4 bg-gradient-to-tr ${course.is_published ? 'from-emerald-500/20 to-teal-500/20 border-emerald-500/20' : 'from-indigo-500/20 to-purple-500/20 border-indigo-500/20'} border flex items-center justify-center`}>
+                                <div className="h-full rounded-2xl glass p-6 transition-all duration-300 hover:bg-slate-800/50 hover:border-emerald-500/30">
+                                    <div className={`h-40 w-full rounded-xl mb-4 bg-gradient-to-tr ${course.is_published ? 'from-emerald-500/20 to-teal-500/20 border-emerald-500/20' : 'from-emerald-500/20 to-teal-500/20 border-emerald-500/20'} border flex items-center justify-center`}>
                                         {course.cover_image ? (
                                             <img
                                                 src={course.cover_image}
@@ -49,7 +49,7 @@ export default async function InstructorCoursesPage() {
                                         )}
                                     </div>
 
-                                    <h3 className="text-xl font-bold text-slate-100 group-hover:text-indigo-400 transition-colors">{course.title}</h3>
+                                    <h3 className="text-xl font-bold text-slate-100 group-hover:text-emerald-400 transition-colors">{course.title}</h3>
                                     <p className="mt-2 text-sm text-slate-400 line-clamp-2">{course.description || "No description provided."}</p>
 
                                     <div className="mt-6 flex items-center justify-between">
@@ -71,7 +71,7 @@ export default async function InstructorCoursesPage() {
                         <div className="mt-6">
                             <Link
                                 href="/instructor/courses/create"
-                                className="inline-flex items-center rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+                                className="inline-flex items-center rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500"
                             >
                                 Create Course
                             </Link>

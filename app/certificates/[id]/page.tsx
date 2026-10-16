@@ -28,7 +28,7 @@ export default async function CertificatePage(props: { params: Promise<{ id: str
         return (
             <div className="flex flex-col items-center justify-center min-h-screen bg-slate-950 text-white">
                 <h1 className="text-2xl font-bold mb-4">Certificate Not Found</h1>
-                <Link href="/student/dashboard" className="text-indigo-400 hover:underline">
+                <Link href="/student/dashboard" className="text-emerald-400 hover:underline">
                     Return to Dashboard
                 </Link>
             </div>
@@ -70,7 +70,7 @@ export default async function CertificatePage(props: { params: Promise<{ id: str
 
                         <p className="text-lg text-slate-600 mb-2">This is to certify that</p>
 
-                        <h3 className="text-4xl font-bold text-indigo-900 mb-8 font-serif italic border-b-2 border-slate-200 pb-2 px-12 inline-block min-w-[300px] print:text-4xl">
+                        <h3 className="text-4xl font-bold text-emerald-900 mb-8 font-serif italic border-b-2 border-slate-200 pb-2 px-12 inline-block min-w-[300px] print:text-4xl">
                             {certificate.profiles.full_name}
                         </h3>
 

@@ -48,7 +48,7 @@ export default async function QuizBuilderPage({
         <div className="min-h-screen bg-slate-950 p-8">
             <div className="mx-auto max-w-4xl">
                 <div className="mb-8">
-                    <Link href={`/instructor/courses/${courseId}`} className="text-sm text-slate-400 hover:text-indigo-400 mb-2 inline-block">
+                    <Link href={`/instructor/courses/${courseId}`} className="text-sm text-slate-400 hover:text-emerald-400 mb-2 inline-block">
                         &larr; Back to Course
                     </Link>
                     <div className="flex items-center justify-between">

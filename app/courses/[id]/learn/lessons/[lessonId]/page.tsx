@@ -66,7 +66,7 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
                     {lesson.content_type === 'video' ? 'Video Lesson' : 'Article'}
                 </div>
                 <form action={completeAction}>
-                    <button type="submit" className="rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 hover:bg-indigo-500 transition-all">
+                    <button type="submit" className="rounded-lg bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-500 transition-all">
                         Mark as Complete
                     </button>
                 </form>

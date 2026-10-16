@@ -39,7 +39,7 @@ export default function ProfileDropdown({ email, fullName, role, avatarUrl }: Pr
                         <img src={avatarUrl} alt={fullName || 'User'} className="h-full w-full object-cover" />
                     </div>
                 ) : (
-                    <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center text-white text-xs font-bold border border-white/10">
+                    <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500 flex items-center justify-center text-white text-xs font-bold border border-white/10">
                         {fullName?.[0]?.toUpperCase() || email[0]?.toUpperCase()}
                     </div>
                 )}

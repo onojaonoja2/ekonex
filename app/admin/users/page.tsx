@@ -57,7 +57,7 @@ export default async function AdminUsersPage() {
                                     </div>
                                 </td>
                                 <td className="px-6 py-4">
-                                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border ${user.role === 'system_admin' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' :
+                                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border ${user.role === 'system_admin' ? 'bg-teal-500/10 text-teal-400 border-teal-500/20' :
                                         user.role === 'instructor' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
                                             user.role === 'sub_admin' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
                                                 'bg-slate-800 text-slate-400 border-slate-700'

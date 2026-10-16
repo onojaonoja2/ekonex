@@ -54,7 +54,7 @@ export default function PayButton({ courseId, price, isLoggedIn }: PayButtonProp
         <button
             onClick={handlePayment}
             disabled={loading}
-            className="w-full rounded-xl bg-indigo-600 py-3 font-semibold text-white hover:bg-indigo-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full rounded-xl bg-emerald-600 py-3 font-semibold text-white hover:bg-emerald-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
             {loading ? (
                 <>

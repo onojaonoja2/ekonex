@@ -43,7 +43,7 @@ export default function LessonEditorForm({ lesson }: { lesson: any }) {
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className="rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-slate-200 outline-none focus:border-indigo-500"
+                    className="rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-slate-200 outline-none focus:border-emerald-500"
                 />
             </div>
 
@@ -56,7 +56,7 @@ export default function LessonEditorForm({ lesson }: { lesson: any }) {
                 <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="px-6 py-2 rounded-xl bg-indigo-600 font-semibold text-white hover:bg-indigo-500 transition-colors disabled:opacity-50"
+                    className="px-6 py-2 rounded-xl bg-emerald-600 font-semibold text-white hover:bg-emerald-500 transition-colors disabled:opacity-50"
                 >
                     {saving ? 'Saving...' : 'Save Changes'}
                 </button>

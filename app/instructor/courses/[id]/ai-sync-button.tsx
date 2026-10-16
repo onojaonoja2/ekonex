@@ -32,10 +32,10 @@ export default function AiSyncButton({ courseId }: { courseId: string }) {
         <button
             onClick={handleSync}
             disabled={isLoading}
-            className="w-full flex items-center justify-center gap-2 rounded-lg bg-indigo-600/10 border border-indigo-500/20 px-3 py-2 text-sm font-semibold text-indigo-400 hover:bg-indigo-600/20 hover:text-indigo-300 disabled:opacity-50 transition-all"
+            className="w-full flex items-center justify-center gap-2 rounded-lg bg-emerald-600/10 border border-emerald-500/20 px-3 py-2 text-sm font-semibold text-emerald-400 hover:bg-emerald-600/20 hover:text-emerald-300 disabled:opacity-50 transition-all"
         >
             {isLoading ? (
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-indigo-500 border-t-transparent"></span>
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent"></span>
             ) : (
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
             )}

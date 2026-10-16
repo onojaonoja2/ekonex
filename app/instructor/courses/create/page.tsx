@@ -36,7 +36,7 @@ export default function CreateCourseForm() {
                             name="title"
                             type="text"
                             required
-                            className="rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all placeholder:text-slate-600"
+                            className="rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all placeholder:text-slate-600"
                             placeholder="e.g., Advanced React Patterns"
                         />
                     </div>
@@ -49,7 +49,7 @@ export default function CreateCourseForm() {
                             id="description"
                             name="description"
                             rows={3}
-                            className="rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all placeholder:text-slate-600"
+                            className="rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all placeholder:text-slate-600"
                             placeholder="Short summary of what students will learn..."
                         />
                     </div>
@@ -65,7 +65,7 @@ export default function CreateCourseForm() {
                             min="0"
                             step="0.01"
                             defaultValue="0"
-                            className="rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all placeholder:text-slate-600"
+                            className="rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all placeholder:text-slate-600"
                         />
                         <p className="text-xs text-slate-500">Set to 0 for a free course.</p>
                     </div>
@@ -75,7 +75,7 @@ export default function CreateCourseForm() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="flex-[2] rounded-xl bg-indigo-600 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all hover:bg-indigo-500 disabled:opacity-50"
+                            className="flex-[2] rounded-xl bg-emerald-600 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 transition-all hover:bg-emerald-500 disabled:opacity-50"
                         >
                             {loading ? 'Creating...' : 'Create Course'}
                         </button>

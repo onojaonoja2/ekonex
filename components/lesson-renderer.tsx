@@ -125,7 +125,7 @@ function SlideViewer({ content }: { content: string }) {
                     <button
                         key={idx}
                         onClick={() => setCurrentSlide(idx)}
-                        className={`h-16 w-24 flex-shrink-0 rounded-md overflow-hidden border-2 ${currentSlide === idx ? 'border-indigo-500' : 'border-transparent opacity-50 hover:opacity-100'}`}
+                        className={`h-16 w-24 flex-shrink-0 rounded-md overflow-hidden border-2 ${currentSlide === idx ? 'border-emerald-500' : 'border-transparent opacity-50 hover:opacity-100'}`}
                     >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={slide} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />

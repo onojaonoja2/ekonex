@@ -44,7 +44,7 @@ export default function StudentAnalytics({ students }: { students: Student[] }) 
                                         <div className="flex items-center gap-3">
                                             <div className="flex-1 w-24 bg-slate-800 rounded-full h-1.5">
                                                 <div
-                                                    className="bg-indigo-500 h-1.5 rounded-full"
+                                                    className="bg-emerald-500 h-1.5 rounded-full"
                                                     style={{ width: `${student.progress}%` }}
                                                 ></div>
                                             </div>

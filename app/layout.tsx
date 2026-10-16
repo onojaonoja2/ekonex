@@ -52,7 +52,7 @@ export default async function RootLayout({
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/logo.png" alt="Ekonex Logo" className="h-8 w-8" />
                   <div>
-                    <span className="text-xl font-bold bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent font-display">Ekonex</span>
+                    <span className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent font-display">Ekonex</span>
                     <span className="hidden md:block text-[10px] text-slate-500 uppercase tracking-widest font-medium">Next level in digital education</span>
                   </div>
                 </Link>
@@ -70,7 +70,7 @@ export default async function RootLayout({
                     />
                   </>
                 ) : (
-                  <Link href="/login" className="text-sm font-semibold text-white hover:text-indigo-400 transition-colors">
+                  <Link href="/login" className="text-sm font-semibold text-white hover:text-emerald-400 transition-colors">
                     Log In
                   </Link>
                 )}

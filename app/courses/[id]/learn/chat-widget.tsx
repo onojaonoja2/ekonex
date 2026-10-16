@@ -48,7 +48,7 @@ export default function ChatWidget({ courseId, lessonId }: { courseId: string, l
         return (
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-indigo-600 shadow-xl shadow-indigo-600/30 flex items-center justify-center text-white hover:bg-indigo-500 transition-all hover:scale-110 z-50"
+                className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-emerald-600 shadow-xl shadow-emerald-600/30 flex items-center justify-center text-white hover:bg-emerald-500 transition-all hover:scale-110 z-50"
             >
                 <div className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full animate-pulse"></div>
                 <MessageCircle size={24} />
@@ -62,8 +62,8 @@ export default function ChatWidget({ courseId, lessonId }: { courseId: string, l
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-900/50 backdrop-blur">
                 <div className="flex items-center gap-2">
-                    <div className="h-8 w-8 rounded-full bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20">
-                        <span className="text-indigo-400 font-bold text-xs">AI</span>
+                    <div className="h-8 w-8 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+                        <span className="text-emerald-400 font-bold text-xs">AI</span>
                     </div>
                     <div>
                         <h3 className="text-sm font-semibold text-white">Ekonex Tutor</h3>
@@ -99,7 +99,7 @@ export default function ChatWidget({ courseId, lessonId }: { courseId: string, l
                         <div className={`
                             max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed
                             ${m.role === 'user'
-                                ? 'bg-indigo-600 text-white rounded-tr-sm'
+                                ? 'bg-emerald-600 text-white rounded-tr-sm'
                                 : 'bg-slate-900 border border-slate-800 text-slate-200 rounded-tl-sm shadow-sm'
                             }
                         `}>
@@ -134,12 +134,12 @@ export default function ChatWidget({ courseId, lessonId }: { courseId: string, l
                         value={localInput}
                         onChange={(e) => setLocalInput(e.target.value)}
                         placeholder="Ask a question..."
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-4 pr-12 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                        className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-4 pr-12 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all"
                     />
                     <button
                         type="submit"
                         disabled={!localInput.trim() || isLoading}
-                        className="absolute right-2 p-1.5 bg-indigo-600 rounded-lg text-white hover:bg-indigo-500 disabled:opacity-50 disabled:hover:bg-indigo-600 transition-colors"
+                        className="absolute right-2 p-1.5 bg-emerald-600 rounded-lg text-white hover:bg-emerald-500 disabled:opacity-50 disabled:hover:bg-emerald-600 transition-colors"
                     >
                         <Send size={16} />
                     </button>

@@ -43,7 +43,7 @@ export default async function AdminLayout({
             {/* Sidebar */}
             <aside className="w-64 border-r border-slate-800 bg-slate-900/50 p-6 flex flex-col fixed inset-y-0">
                 <div className="mb-8 flex items-center gap-2">
-                    <div className="h-8 w-8 bg-indigo-500 rounded-lg flex items-center justify-center font-bold text-white">E</div>
+                    <div className="h-8 w-8 bg-emerald-500 rounded-lg flex items-center justify-center font-bold text-white">E</div>
                     <span className="font-bold text-xl text-white">Admin</span>
                 </div>
 

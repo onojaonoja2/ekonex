@@ -34,7 +34,7 @@ export default async function LessonEditorPage({ params }: { params: Promise<{ i
         <div className="min-h-screen bg-slate-950 p-6 md:p-12">
             <div className="max-w-4xl mx-auto">
                 <div className="mb-6">
-                    <Link href={`/instructor/courses/${lesson.module.course_id}`} className="text-sm text-slate-400 hover:text-indigo-400 mb-2 inline-block">
+                    <Link href={`/instructor/courses/${lesson.module.course_id}`} className="text-sm text-slate-400 hover:text-emerald-400 mb-2 inline-block">
                         &larr; Back to Course
                     </Link>
                     <h1 className="text-2xl font-bold text-white">Edit Lesson: {lesson.title}</h1>
