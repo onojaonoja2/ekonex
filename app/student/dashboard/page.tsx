@@ -88,12 +88,12 @@ export default async function StudentDashboard() {
                     <div className="lg:col-span-1 space-y-6">
                         <div className="glass rounded-2xl p-6 text-center border border-slate-800">
                             {profile?.avatar_url ? (
-                                <div className="h-24 w-24 rounded-full overflow-hidden border-4 border-slate-800 mx-auto mb-4 shadow-xl shadow-indigo-500/20">
+                                <div className="h-24 w-24 rounded-full overflow-hidden border-4 border-slate-800 mx-auto mb-4 shadow-xl shadow-emerald-500/20">
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img src={profile.avatar_url} alt={profile.full_name || 'User'} className="h-full w-full object-cover" />
                                 </div>
                             ) : (
-                                <div className="h-24 w-24 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center text-3xl font-bold text-white shadow-xl shadow-indigo-500/20 mx-auto mb-4">
+                                <div className="h-24 w-24 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500 flex items-center justify-center text-3xl font-bold text-white shadow-xl shadow-emerald-500/20 mx-auto mb-4">
                                     {profile?.full_name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase()}
                                 </div>
                             )}
@@ -111,7 +111,7 @@ export default async function StudentDashboard() {
                     {/* Main Content / Enrolled Courses */}
                     <div className="lg:col-span-3">
                         <div className="mb-8">
-                            <h1 className="text-3xl font-bold font-display text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-400">
+                            <h1 className="text-3xl font-bold font-display text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">
                                 My Learning
                             </h1>
                             <p className="text-slate-400 mt-2">
@@ -144,7 +144,7 @@ export default async function StudentDashboard() {
 
                                                 <div className="flex-1 flex flex-col">
                                                     <Link href={`/courses/${enrollment.course_id}/learn`} className="block flex-1">
-                                                        <h3 className="font-bold text-lg text-white group-hover:text-indigo-400 transition-colors mb-2">{enrollment.courses.title}</h3>
+                                                        <h3 className="font-bold text-lg text-white group-hover:text-emerald-400 transition-colors mb-2">{enrollment.courses.title}</h3>
                                                         <p className="text-sm text-slate-400 line-clamp-2 mb-4">{enrollment.courses.description || 'No description'}</p>
                                                     </Link>
 
@@ -164,7 +164,7 @@ export default async function StudentDashboard() {
                                                         {progress === 100 && (
                                                             <Link
                                                                 href={`/courses/${enrollment.course_id}/certificate`}
-                                                                className="flex items-center justify-center gap-2 w-full py-1.5 mt-2 rounded-lg bg-indigo-600 text-white text-xs font-semibold shadow-lg shadow-indigo-500/25 hover:bg-indigo-500 transition-all hover:scale-[1.02]"
+                                                                className="flex items-center justify-center gap-2 w-full py-1.5 mt-2 rounded-lg bg-emerald-600 text-white text-xs font-semibold shadow-lg shadow-emerald-500/25 hover:bg-emerald-500 transition-all hover:scale-[1.02]"
                                                             >
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
                                                                 View Certificate
@@ -184,7 +184,7 @@ export default async function StudentDashboard() {
                                 </div>
                                 <h3 className="text-lg font-medium text-white mb-2">No courses yet</h3>
                                 <p className="text-slate-400 mb-6">Start your learning journey today.</p>
-                                <Link href="/#courses" className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-6 py-2 text-sm font-semibold text-white hover:bg-indigo-500 transition-colors">
+                                <Link href="/#courses" className="inline-flex items-center justify-center rounded-xl bg-emerald-600 px-6 py-2 text-sm font-semibold text-white hover:bg-emerald-500 transition-colors">
                                     Browse Courses
                                 </Link>
                             </div>

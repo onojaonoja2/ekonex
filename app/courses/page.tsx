@@ -14,7 +14,7 @@ export default async function CourseCatalogPage() {
 
     return (
         <div className="min-h-screen bg-slate-950">
-            <div className="relative py-20 px-8 text-center bg-gradient-to-b from-indigo-950 via-slate-950 to-slate-950">
+            <div className="relative py-20 px-8 text-center bg-gradient-to-b from-emerald-950 via-slate-950 to-slate-950">
                 <h1 className="text-4xl md:text-5xl font-bold text-white font-display mb-4">Explore Courses</h1>
                 <p className="text-slate-400 max-w-2xl mx-auto text-lg">Master new skills with our expert-led courses. Choose from a wide range of topics.</p>
             </div>

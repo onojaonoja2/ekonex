@@ -106,7 +106,7 @@ export default function AuthModal({ isOpen, onClose, courseId }: AuthModalProps)
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full mt-1 bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                                className="w-full mt-1 bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                                 placeholder="name@example.com"
                             />
                         </div>
@@ -117,7 +117,7 @@ export default function AuthModal({ isOpen, onClose, courseId }: AuthModalProps)
                                 required
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="w-full mt-1 bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                                className="w-full mt-1 bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                                 placeholder="••••••••"
                             />
                         </div>
@@ -125,7 +125,7 @@ export default function AuthModal({ isOpen, onClose, courseId }: AuthModalProps)
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-xl transition-all disabled:opacity-50"
+                            className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 rounded-xl transition-all disabled:opacity-50"
                         >
                             {loading ? 'Processing...' : (mode === 'login' ? 'Log In' : 'Sign Up')}
                         </button>
@@ -136,7 +136,7 @@ export default function AuthModal({ isOpen, onClose, courseId }: AuthModalProps)
                             {mode === 'login' ? "Don't have an account? " : "Already have an account? "}
                             <button
                                 onClick={() => setMode(mode === 'login' ? 'register' : 'login')}
-                                className="text-indigo-400 hover:text-indigo-300 font-medium"
+                                className="text-emerald-400 hover:text-emerald-300 font-medium"
                             >
                                 {mode === 'login' ? 'Sign up' : 'Log in'}
                             </button>

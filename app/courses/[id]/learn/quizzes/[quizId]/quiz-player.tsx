@@ -81,7 +81,7 @@ export default function QuizPlayer({
                                     key={a.id}
                                     onClick={() => handleSelect(q.id, a.id)}
                                     className={`w-full text-left p-4 rounded-xl border transition-all ${answers[q.id] === a.id
-                                            ? 'border-indigo-500 bg-indigo-500/10 text-white'
+                                            ? 'border-emerald-500 bg-emerald-500/10 text-white'
                                             : 'border-slate-800 bg-slate-950 text-slate-400 hover:bg-slate-900'
                                         }`}
                                 >
@@ -97,7 +97,7 @@ export default function QuizPlayer({
                 <button
                     onClick={handleSubmit}
                     disabled={isSubmitting}
-                    className="rounded-xl bg-indigo-600 px-8 py-3 font-semibold text-white shadow-lg shadow-indigo-500/20 hover:bg-indigo-500 disabled:opacity-50 transition-all"
+                    className="rounded-xl bg-emerald-600 px-8 py-3 font-semibold text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-500 disabled:opacity-50 transition-all"
                 >
                     {isSubmitting ? 'Submitting...' : 'Submit Quiz'}
                 </button>

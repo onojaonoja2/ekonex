@@ -180,7 +180,7 @@ export default function RichEditor({
                                     id={`textarea-${block.id}`}
                                     value={block.content}
                                     onChange={(e) => updateBlock(block.id, e.target.value)}
-                                    className="w-full bg-slate-950 border border-t-0 border-slate-800 rounded-b-lg p-3 text-slate-300 min-h-[150px] focus:outline-none focus:border-indigo-500 font-mono text-sm leading-relaxed"
+                                    className="w-full bg-slate-950 border border-t-0 border-slate-800 rounded-b-lg p-3 text-slate-300 min-h-[150px] focus:outline-none focus:border-emerald-500 font-mono text-sm leading-relaxed"
                                     placeholder="Write content here..."
                                 />
                             </div>
@@ -202,7 +202,7 @@ export default function RichEditor({
                                 <textarea
                                     value={block.content}
                                     onChange={(e) => updateBlock(block.id, e.target.value)}
-                                    className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-slate-300 font-mono text-sm min-h-[150px] focus:outline-none focus:border-indigo-500"
+                                    className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-slate-300 font-mono text-sm min-h-[150px] focus:outline-none focus:border-emerald-500"
                                     placeholder="Paste code here..."
                                 />
                             </div>
@@ -236,20 +236,20 @@ export default function RichEditor({
                                                     placeholder="Image Title"
                                                     value={block.meta?.title || ''}
                                                     onChange={(e) => updateBlock(block.id, block.content, { title: e.target.value })}
-                                                    className="bg-slate-950 border border-slate-800 rounded-lg p-2 text-sm text-slate-300 focus:outline-none focus:border-indigo-500"
+                                                    className="bg-slate-950 border border-slate-800 rounded-lg p-2 text-sm text-slate-300 focus:outline-none focus:border-emerald-500"
                                                 />
                                                 <input
                                                     type="text"
                                                     placeholder="Footer / Caption"
                                                     value={block.meta?.footer || ''}
                                                     onChange={(e) => updateBlock(block.id, block.content, { footer: e.target.value })}
-                                                    className="bg-slate-950 border border-slate-800 rounded-lg p-2 text-sm text-slate-300 focus:outline-none focus:border-indigo-500"
+                                                    className="bg-slate-950 border border-slate-800 rounded-lg p-2 text-sm text-slate-300 focus:outline-none focus:border-emerald-500"
                                                 />
                                             </div>
                                         )}
                                     </>
                                 ) : (
-                                    <div className="border-2 border-dashed border-slate-800 rounded-lg p-8 flex flex-col items-center justify-center hover:border-indigo-500/50 hover:bg-indigo-500/5 transition-all">
+                                    <div className="border-2 border-dashed border-slate-800 rounded-lg p-8 flex flex-col items-center justify-center hover:border-emerald-500/50 hover:bg-emerald-500/5 transition-all">
                                         <input
                                             type="file"
                                             accept={block.type === 'image' ? "image/*" : "application/pdf"}
@@ -284,13 +284,13 @@ export default function RichEditor({
                                 <div className="flex gap-4 border-b border-slate-800 pb-2">
                                     <button
                                         onClick={() => updateBlock(block.id, '', { sourceType: 'url' })}
-                                        className={`text-xs font-semibold px-2 py-1 rounded ${!block.meta?.sourceType || block.meta?.sourceType === 'url' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-indigo-400'}`}
+                                        className={`text-xs font-semibold px-2 py-1 rounded ${!block.meta?.sourceType || block.meta?.sourceType === 'url' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-emerald-400'}`}
                                     >
                                         Embed URL (YouTube)
                                     </button>
                                     <button
                                         onClick={() => updateBlock(block.id, '', { sourceType: 'upload' })}
-                                        className={`text-xs font-semibold px-2 py-1 rounded ${block.meta?.sourceType === 'upload' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-indigo-400'}`}
+                                        className={`text-xs font-semibold px-2 py-1 rounded ${block.meta?.sourceType === 'upload' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-emerald-400'}`}
                                     >
                                         Upload Video
                                     </button>
@@ -309,7 +309,7 @@ export default function RichEditor({
                                                 </button>
                                             </div>
                                         ) : (
-                                            <div className="border-2 border-dashed border-slate-800 rounded-lg p-8 flex flex-col items-center justify-center hover:border-indigo-500/50 hover:bg-indigo-500/5 transition-all">
+                                            <div className="border-2 border-dashed border-slate-800 rounded-lg p-8 flex flex-col items-center justify-center hover:border-emerald-500/50 hover:bg-emerald-500/5 transition-all">
                                                 <input
                                                     type="file"
                                                     accept="video/*"
@@ -330,7 +330,7 @@ export default function RichEditor({
                                         value={block.content}
                                         onChange={(e) => updateBlock(block.id, e.target.value)}
                                         placeholder="Paste YouTube or Vimeo URL..."
-                                        className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-slate-300 focus:outline-none focus:border-indigo-500"
+                                        className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-slate-300 focus:outline-none focus:border-emerald-500"
                                     />
                                 )}
                             </div>

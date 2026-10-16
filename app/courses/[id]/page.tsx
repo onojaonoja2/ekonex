@@ -65,18 +65,18 @@ export default async function CourseDetailsPage({
     return (
         <div className="min-h-screen bg-slate-950 pb-20">
             {/* Hero Section */}
-            <div className="relative bg-slate-900 border-b border-indigo-500/10">
-                <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent"></div>
+            <div className="relative bg-slate-900 border-b border-emerald-500/10">
+                <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent"></div>
                 <div className="max-w-7xl mx-auto px-8 py-20 grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
                     <div className="col-span-2">
-                        <div className="inline-flex items-center rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-400 mb-6">
+                        <div className="inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400 mb-6">
                             {course.price > 0 ? 'Premium Course' : 'Free Course'}
                         </div>
                         <h1 className="text-4xl md:text-5xl font-bold text-white font-display mb-6 leading-tight">{course.title}</h1>
                         <p className="text-lg text-slate-400 mb-8 leading-relaxed">{course.description}</p>
 
                         <div className="flex items-center gap-4">
-                            <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center text-white font-bold">
+                            <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500 flex items-center justify-center text-white font-bold">
                                 {(course.profiles as any)?.full_name?.[0] || 'I'}
                             </div>
                             <div>
@@ -99,7 +99,7 @@ export default async function CourseDetailsPage({
                                     <div className="rounded-xl bg-emerald-500/10 border border-emerald-500/20 p-4 text-center">
                                         <p className="text-emerald-400 font-semibold">You are enrolled!</p>
                                     </div>
-                                    <Link href={`/courses/${id}/learn`} className="block w-full text-center rounded-xl bg-indigo-600 py-3 font-semibold text-white hover:bg-indigo-500 transition-all">
+                                    <Link href={`/courses/${id}/learn`} className="block w-full text-center rounded-xl bg-emerald-600 py-3 font-semibold text-white hover:bg-emerald-500 transition-all">
                                         Continue Learning
                                     </Link>
                                 </div>
@@ -124,7 +124,7 @@ export default async function CourseDetailsPage({
                                     <p className="mt-4 text-xs text-center text-slate-500">Lifetime access</p>
                                     {!user && (
                                         <p className="mt-3 text-xs text-center text-slate-500">
-                                            Already have an account? <Link href={`/login?next=/courses/${id}`} className="text-indigo-400 hover:underline">Log in</Link>
+                                            Already have an account? <Link href={`/login?next=/courses/${id}`} className="text-emerald-400 hover:underline">Log in</Link>
                                         </p>
                                     )}
                                 </div>

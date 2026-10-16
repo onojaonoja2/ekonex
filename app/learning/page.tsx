@@ -56,11 +56,11 @@ export default async function MyLearningPage() {
 
                             return (
                                 <Link key={enrollment.id} href={`/courses/${course.id}/learn`} className="group block h-full">
-                                    <div className="h-full rounded-2xl glass p-6 transition-all duration-300 hover:bg-slate-800/50 hover:border-indigo-500/30">
-                                        <h3 className="text-xl font-bold text-slate-100 group-hover:text-indigo-400 transition-colors">{course.title}</h3>
+                                    <div className="h-full rounded-2xl glass p-6 transition-all duration-300 hover:bg-slate-800/50 hover:border-emerald-500/30">
+                                        <h3 className="text-xl font-bold text-slate-100 group-hover:text-emerald-400 transition-colors">{course.title}</h3>
                                         <p className="mt-2 text-sm text-slate-400 line-clamp-2">{course.description}</p>
                                         <div className="mt-4 w-full bg-slate-800 rounded-full h-1.5">
-                                            <div className="bg-indigo-500 h-1.5 rounded-full transition-all duration-500" style={{ width: `${percent}%` }}></div>
+                                            <div className="bg-emerald-500 h-1.5 rounded-full transition-all duration-500" style={{ width: `${percent}%` }}></div>
                                         </div>
                                         <p className="mt-2 text-xs text-slate-500">{percent}% Complete</p>
                                     </div>
@@ -74,7 +74,7 @@ export default async function MyLearningPage() {
                         <div className="mt-6">
                             <Link
                                 href="/courses"
-                                className="inline-flex items-center rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+                                className="inline-flex items-center rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500"
                             >
                                 Browse Catalog
                             </Link>

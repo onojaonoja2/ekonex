@@ -104,21 +104,21 @@ export default function QuizEditor({
                                 <form action={(fd) => handleAddAnswer(question.id, fd)} className="p-4 bg-slate-950 rounded-lg border border-slate-800 animate-in fade-in slide-in-from-top-2">
                                     <h4 className="text-xs font-semibold text-slate-500 uppercase mb-3">Add Answer Option</h4>
                                     <div className="space-y-3">
-                                        <input name="text" required placeholder="Answer text..." className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-200 focus:border-indigo-500 outline-none" />
+                                        <input name="text" required placeholder="Answer text..." className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-200 focus:border-emerald-500 outline-none" />
                                         <div className="flex items-center gap-2">
                                             <input type="checkbox" name="isCorrect" id={`correct-${question.id}`} className="rounded border-slate-600 bg-slate-800" />
                                             <label htmlFor={`correct-${question.id}`} className="text-sm text-slate-300">This is the correct answer</label>
                                         </div>
                                         <div className="flex gap-2 justify-end pt-2">
                                             <button type="button" onClick={() => setAddingAnswerToQuestion(null)} className="px-3 py-1.5 text-xs text-slate-400 hover:text-white">Cancel</button>
-                                            <button type="submit" className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-500">Add Answer</button>
+                                            <button type="submit" className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-500">Add Answer</button>
                                         </div>
                                     </div>
                                 </form>
                             ) : (
                                 <button
                                     onClick={() => setAddingAnswerToQuestion(question.id)}
-                                    className="text-sm text-indigo-400 hover:text-indigo-300 font-medium flex items-center gap-1"
+                                    className="text-sm text-emerald-400 hover:text-emerald-300 font-medium flex items-center gap-1"
                                 >
                                     + Add Answer Option
                                 </button>
@@ -129,23 +129,23 @@ export default function QuizEditor({
             </div>
 
             {isAddingQuestion ? (
-                <div className="rounded-xl border border-indigo-500/30 bg-indigo-500/5 p-6">
+                <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-6">
                     <h3 className="text-lg font-semibold text-white mb-4">New Question</h3>
                     <form action={handleAddQuestion} className="space-y-4">
                         <div>
-                            <label className="block text-xs font-semibold text-indigo-300 uppercase mb-1">Question Text</label>
-                            <textarea name="text" required placeholder="What is the capital of France?" rows={2} className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-200 focus:border-indigo-500 outline-none" />
+                            <label className="block text-xs font-semibold text-emerald-300 uppercase mb-1">Question Text</label>
+                            <textarea name="text" required placeholder="What is the capital of France?" rows={2} className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-200 focus:border-emerald-500 outline-none" />
                         </div>
                         <div className="flex gap-3 justify-end">
                             <button type="button" onClick={() => setIsAddingQuestion(false)} className="px-4 py-2 text-sm font-semibold text-slate-400 hover:text-white">Cancel</button>
-                            <button type="submit" className="rounded-lg bg-indigo-600 px-6 py-2 text-sm font-semibold text-white hover:bg-indigo-500 shadow-lg shadow-indigo-500/20">Create Question</button>
+                            <button type="submit" className="rounded-lg bg-emerald-600 px-6 py-2 text-sm font-semibold text-white hover:bg-emerald-500 shadow-lg shadow-emerald-500/20">Create Question</button>
                         </div>
                     </form>
                 </div>
             ) : (
                 <button
                     onClick={() => setIsAddingQuestion(true)}
-                    className="w-full py-4 rounded-xl border-2 border-dashed border-slate-800 text-slate-500 font-semibold hover:border-indigo-500/50 hover:text-indigo-400 hover:bg-indigo-500/5 transition-all"
+                    className="w-full py-4 rounded-xl border-2 border-dashed border-slate-800 text-slate-500 font-semibold hover:border-emerald-500/50 hover:text-emerald-400 hover:bg-emerald-500/5 transition-all"
                 >
                     + Add Question
                 </button>

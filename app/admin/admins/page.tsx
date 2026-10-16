@@ -66,7 +66,7 @@ export default async function AdminManagementPage() {
                                     </div>
                                 </td>
                                 <td className="px-6 py-4">
-                                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border ${admin.role === 'system_admin' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' : 'bg-blue-500/10 text-blue-400 border-blue-500/20'}`}>
+                                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border ${admin.role === 'system_admin' ? 'bg-teal-500/10 text-teal-400 border-teal-500/20' : 'bg-blue-500/10 text-blue-400 border-blue-500/20'}`}>
                                         <Shield size={12} />
                                         {admin.role}
                                     </span>

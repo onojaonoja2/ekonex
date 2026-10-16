@@ -61,7 +61,7 @@ export default function ProfileForm({ profile }: { profile: any }) {
                         name="fullName"
                         type="text"
                         defaultValue={profile?.full_name || ''}
-                        className="rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all placeholder:text-slate-600"
+                        className="rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all placeholder:text-slate-600"
                         placeholder="John Doe"
                     />
                 </div>
@@ -75,7 +75,7 @@ export default function ProfileForm({ profile }: { profile: any }) {
                         name="website"
                         type="url"
                         defaultValue={profile?.website || ''}
-                        className="rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all placeholder:text-slate-600"
+                        className="rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all placeholder:text-slate-600"
                         placeholder="https://example.com"
                     />
                 </div>
@@ -83,7 +83,7 @@ export default function ProfileForm({ profile }: { profile: any }) {
                 <button
                     type="submit"
                     disabled={loading}
-                    className="mt-4 flex items-center justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all hover:scale-[1.02] hover:shadow-indigo-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="mt-4 flex items-center justify-center rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 transition-all hover:scale-[1.02] hover:shadow-emerald-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {loading ? 'Saving...' : 'Update Profile'}
                 </button>

@@ -45,7 +45,7 @@ export default async function RegisterPage({
                                 type="text"
                                 required
                                 placeholder="John Doe"
-                                className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 transition-colors"
+                                className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition-colors"
                             />
                         </div>
 
@@ -56,7 +56,7 @@ export default async function RegisterPage({
                                 type="email"
                                 required
                                 placeholder="you@example.com"
-                                className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 transition-colors"
+                                className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition-colors"
                             />
                         </div>
 
@@ -67,7 +67,7 @@ export default async function RegisterPage({
                                 type="password"
                                 required
                                 placeholder="••••••••"
-                                className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 transition-colors"
+                                className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500 transition-colors"
                             />
                         </div>
                     </div>
@@ -82,7 +82,7 @@ export default async function RegisterPage({
                         formAction={signup}
                         className={`w-full mt-8 py-4 rounded-xl font-bold text-white shadow-lg transition-all hover:scale-[1.02] ${isInstructor
                             ? 'bg-gradient-to-r from-emerald-600 to-teal-600 shadow-emerald-500/20 hover:shadow-emerald-500/40'
-                            : 'bg-gradient-to-r from-indigo-600 to-violet-600 shadow-indigo-500/20 hover:shadow-indigo-500/40'
+                            : 'bg-gradient-to-r from-emerald-600 to-teal-600 shadow-emerald-500/20 hover:shadow-emerald-500/40'
                             }`}
                     >
                         Create Account

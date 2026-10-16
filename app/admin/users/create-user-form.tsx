@@ -31,7 +31,7 @@ export default function CreateUserForm() {
         return (
             <button
                 onClick={() => setIsOpen(true)}
-                className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+                className="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
             >
                 <Plus size={18} />
                 Add User
@@ -52,22 +52,22 @@ export default function CreateUserForm() {
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-slate-400 mb-1">Full Name</label>
-                        <input name="fullName" required className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-indigo-500" placeholder="John Doe" />
+                        <input name="fullName" required className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-emerald-500" placeholder="John Doe" />
                     </div>
 
                     <div>
                         <label className="block text-sm font-medium text-slate-400 mb-1">Email Address</label>
-                        <input name="email" type="email" required className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-indigo-500" placeholder="john@example.com" />
+                        <input name="email" type="email" required className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-emerald-500" placeholder="john@example.com" />
                     </div>
 
                     <div>
                         <label className="block text-sm font-medium text-slate-400 mb-1">Password</label>
-                        <input name="password" type="password" required className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-indigo-500" placeholder="••••••••" />
+                        <input name="password" type="password" required className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-emerald-500" placeholder="••••••••" />
                     </div>
 
                     <div>
                         <label className="block text-sm font-medium text-slate-400 mb-1">Role</label>
-                        <select name="role" required className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-indigo-500">
+                        <select name="role" required className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-emerald-500">
                             <option value="student">Student</option>
                             <option value="instructor">Instructor</option>
                             <option value="sub_admin">Sub Admin</option>
@@ -79,7 +79,7 @@ export default function CreateUserForm() {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+                            className="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
                         >
                             {isLoading && <Loader2 size={16} className="animate-spin" />}
                             Create Account

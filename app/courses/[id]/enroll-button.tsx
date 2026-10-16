@@ -30,7 +30,7 @@ export default function EnrollButton({ courseId, isLoggedIn, price, enrollAction
             <>
                 <button
                     onClick={() => setShowAuth(true)}
-                    className="w-full rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 py-3 font-semibold text-white shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/50 transition-all hover:scale-[1.02]"
+                    className="w-full rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 py-3 font-semibold text-white shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/50 transition-all hover:scale-[1.02]"
                 >
                     {price > 0 ? 'Buy Now' : 'Enroll for Free'}
                 </button>
@@ -46,7 +46,7 @@ export default function EnrollButton({ courseId, isLoggedIn, price, enrollAction
         <form action={enrollAction}>
             <button
                 type="submit"
-                className="w-full rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 py-3 font-semibold text-white shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/50 transition-all hover:scale-[1.02]"
+                className="w-full rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 py-3 font-semibold text-white shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/50 transition-all hover:scale-[1.02]"
             >
                 {price > 0 ? 'Buy Now' : 'Enroll for Free'}
             </button>

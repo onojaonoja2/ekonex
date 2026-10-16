@@ -105,7 +105,7 @@ export default async function InstructorCourseDashboard({ params }: { params: Pr
             <div className="mx-auto max-w-5xl">
                 <div className="mb-8 flex items-center justify-between">
                     <div>
-                        <Link href="/instructor/courses" className="text-sm text-slate-400 hover:text-indigo-400 mb-2 inline-block">
+                        <Link href="/instructor/courses" className="text-sm text-slate-400 hover:text-emerald-400 mb-2 inline-block">
                             &larr; Back to Courses
                         </Link>
                         <h1 className="text-3xl font-bold font-display text-white">{course.title}</h1>

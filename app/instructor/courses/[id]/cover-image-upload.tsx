@@ -56,7 +56,7 @@ export default function CoverImageUpload({
     }
 
     return (
-        <div className="relative group w-full aspect-video bg-slate-900 rounded-xl overflow-hidden border-2 border-dashed border-slate-800 hover:border-indigo-500/50 transition-all">
+        <div className="relative group w-full aspect-video bg-slate-900 rounded-xl overflow-hidden border-2 border-dashed border-slate-800 hover:border-emerald-500/50 transition-all">
             {url ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={url} alt="Cover" className="w-full h-full object-cover" />

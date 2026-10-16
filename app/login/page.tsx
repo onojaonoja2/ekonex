@@ -12,10 +12,10 @@ export default async function LoginPage({
 
     return (
         <div className="flex min-h-screen flex-col items-center justify-center p-4">
-            <div className="glass w-full max-w-md rounded-2xl p-8 shadow-2xl transition-all duration-300 hover:shadow-indigo-500/10">
+            <div className="glass w-full max-w-md rounded-2xl p-8 shadow-2xl transition-all duration-300 hover:shadow-emerald-500/10">
                 <div className="mb-8 text-center">
                     <Link href="/" className="inline-block hover:opacity-80 transition-opacity">
-                        <h1 className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-4xl font-bold text-transparent font-display">
+                        <h1 className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-4xl font-bold text-transparent font-display">
                             Ekonex
                         </h1>
                     </Link>
@@ -28,7 +28,7 @@ export default async function LoginPage({
                     {next && <input type="hidden" name="redirectUrl" value={next} />}
                     <div className="group relative">
                         <input
-                            className="peer w-full rounded-xl bg-slate-900/50 border border-slate-700 px-4 py-3 text-sm text-slate-200 placeholder-transparent outline-none transition-all focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                            className="peer w-full rounded-xl bg-slate-900/50 border border-slate-700 px-4 py-3 text-sm text-slate-200 placeholder-transparent outline-none transition-all focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                             id="email"
                             name="email"
                             type="email"
@@ -37,7 +37,7 @@ export default async function LoginPage({
                         />
                         <label
                             htmlFor="email"
-                            className="absolute left-4 top-3 z-10 -translate-y-7 scale-75 pt-1 text-xs text-slate-400 transition-all peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-7 peer-focus:scale-75 peer-focus:text-indigo-400"
+                            className="absolute left-4 top-3 z-10 -translate-y-7 scale-75 pt-1 text-xs text-slate-400 transition-all peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-7 peer-focus:scale-75 peer-focus:text-emerald-400"
                         >
                             Email Address
                         </label>
@@ -45,7 +45,7 @@ export default async function LoginPage({
 
                     <div className="group relative">
                         <input
-                            className="peer w-full rounded-xl bg-slate-900/50 border border-slate-700 px-4 py-3 text-sm text-slate-200 placeholder-transparent outline-none transition-all focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                            className="peer w-full rounded-xl bg-slate-900/50 border border-slate-700 px-4 py-3 text-sm text-slate-200 placeholder-transparent outline-none transition-all focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                             id="password"
                             name="password"
                             type="password"
@@ -54,7 +54,7 @@ export default async function LoginPage({
                         />
                         <label
                             htmlFor="password"
-                            className="absolute left-4 top-3 z-10 -translate-y-7 scale-75 pt-1 text-xs text-slate-400 transition-all peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-7 peer-focus:scale-75 peer-focus:text-indigo-400"
+                            className="absolute left-4 top-3 z-10 -translate-y-7 scale-75 pt-1 text-xs text-slate-400 transition-all peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-7 peer-focus:scale-75 peer-focus:text-emerald-400"
                         >
                             Password
                         </label>
@@ -63,7 +63,7 @@ export default async function LoginPage({
                     <div className="mt-4 flex flex-col gap-3">
                         <button
                             formAction={login}
-                            className="w-full rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition-all hover:scale-[1.02] hover:shadow-indigo-500/50 active:scale-95"
+                            className="w-full rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 transition-all hover:scale-[1.02] hover:shadow-emerald-500/50 active:scale-95"
                         >
                             Log In
                         </button>
